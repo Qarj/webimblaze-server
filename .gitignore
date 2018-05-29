@@ -1,0 +1,19 @@
+# Python byte-compiled
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Django
+*.log
+.static_storage/
+.media/
+local_settings.py
+db.sqlite3
+
+# Migrations
+00*.py
+
+## NUnit
+*.dll
+*.exe
+TestResult.xml
