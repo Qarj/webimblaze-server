@@ -8,3 +8,10 @@ from itertools import chain
 
 def index(request):
     return HttpResponse("Hello, world. You're at the Webinject Server index.")
+
+def run(request):
+    path = request.GET.get('path', None)
+    
+    print ('You want to run the existing test:', path)
+
+    return HttpResponse ('You want to run the existing test:' + path)

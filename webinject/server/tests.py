@@ -37,13 +37,17 @@ class RunWebInjectFrameWorkTests(TestCase):
     #
     # test helpers
     #
-    
+
+    def runit(self, path, debug=False):
+        url = my_reverse('server:run', query_kwargs={'path': path})
+        return self._get_url(url, debug)
+
     def _get_url(self, url, debug=False):
-            response = self.client.get(url)
-            if (debug):
-                print('\nDebug URL:', url)
-                print(response.content.decode('utf-8'), '\n')
-            return response
+        response = self.client.get(url)
+        if (debug):
+            print('\nDebug URL:', url)
+            print(response.content.decode('utf-8'), '\n')
+        return response
 
     def number_of_instances(self, response, target):
         return response.content.decode('utf-8').count(target)
@@ -54,5 +58,20 @@ class RunWebInjectFrameWorkTests(TestCase):
     def _assertNotRegex(self, response, regex):
         self.assertNotRegex(response.content.decode('utf-8'), regex)
 
-        
+    #
+    # Run WebInject Framework Tests
+    #
+
+    def test_run_simple_test_in_webinject_examples(self):
+        response = self.runit('examples/test.xml')
+        self.assertContains(response, 'Test that WebInject can run a very basic test')
+
+
+# POC Tests
+#   - GET URL server/run?path=examples%2Ftest.xml will run examples/test.xml and return result
+
+# MVP Tests
+#   - POST URL server/submit with POSTBODY of webinject test cases.
+
+
 ## https://cgoldberg.github.io/python-unittest-tutorial/
