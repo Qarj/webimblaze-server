@@ -1,0 +1,11 @@
+<testcases repeat="1">
+
+<case
+    id="10"
+    description1="Run a quick test"
+    method="get"
+    url="http://127.0.0.1:8000/server/run/?path=examples%2Ftest.xml"
+    verifypositive1="Test that WebInject can run a very basic test"
+/>
+
+</testcases>
