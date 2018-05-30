@@ -63,8 +63,10 @@ class RunWebInjectFrameWorkTests(TestCase):
     #
 
     def test_run_simple_test_in_webinject_examples(self):
-        response = self.runit('examples/test.xml')
+        response = self.runit('examples/test.xml', True)
         self.assertContains(response, 'Test that WebInject can run a very basic test')
+        self.assertContains(response, '<pre><code>')
+        self.assertContains(response, '</code></pre>')
 
 
 # POC Tests
