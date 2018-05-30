@@ -2,6 +2,12 @@
 
 WebInject Server is a project for running WebInject over http.
 
+Run an existing script via a GET.
+
+Or submit a test script to run using POST.
+
+This project is not yet ready for use, check back later!
+
 The main WebInject project is here: http://qarj.github.io/WebInject
 
 ## Install on Windows
