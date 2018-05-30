@@ -67,6 +67,7 @@ class RunWebInjectFrameWorkTests(TestCase):
         self.assertContains(response, 'Test that WebInject can run a very basic test')
         self.assertContains(response, '<pre><code>')
         self.assertContains(response, '</code></pre>')
+        self.assertContains(response, 'Result at: http')
 
 
 # POC Tests
