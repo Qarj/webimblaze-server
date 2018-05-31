@@ -74,7 +74,6 @@ class RunWebInjectFrameWorkTests(TestCase):
 # \Apache24\bin\httpd -k restart
 
 # Post POC Hardening Tests
-#   - Add stylesheet for test run
 #   - Add a favicon
 #   - Prepend a WEBINJECT TEST PASSED or WEBINJECT TEST FAILED message (in correct colours)
 #   - Prepend a WEBINJECT ERROR message, return 500 (in red)
