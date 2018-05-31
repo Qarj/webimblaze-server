@@ -1,4 +1,5 @@
-@import 'https://fonts.googleapis.com/css?family=Ubuntu
+@import 'https://fonts.googleapis.com/css?family=Ubuntu'
+@import 'https://fonts.googleapis.com/css?family=Source+Code+Pro'
 
 * {
 	-webkit-box-sizing: border-box;
@@ -39,6 +40,10 @@ body {
 
 p {
 	font-size: 16px;
+}
+
+pre {
+    font-family: 'Source Code Pro', monospace;
 }
 
 h1 {
