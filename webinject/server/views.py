@@ -13,17 +13,30 @@ def index(request):
 def run(request):
     path = request.GET.get('path', None)
 
-    print ('You want to run the existing test:', path)
+    print ('Started existing test execution:', path)
+    result_stdout = run_wif_for_test_file_at_path(path)
+    print ('Finished existing test execution:', path)
 
-    response = run_wif_for_test_file_at_path(path)
+    page_title = path
+    page_heading = 'Run existing test: ' + path
+    error = ''
 
-    return HttpResponse (
-        'Run existing test:' + path +
-        '\n<br /><br />\n' +
-        '<pre><code>' +
-        response +
-        '</code></pre>'
-    )
+    context = {
+        'page_title': page_title,
+        'page_heading': page_heading,
+        'result_stdout': result_stdout,
+        'error': error,
+    }
+    
+    return render(request, 'server/run.html', context)
+
+#    return HttpResponse (
+#        'Run existing test:' + path +
+#        '\n<br /><br />\n' +
+#        '<pre><code>' +
+#        response +
+#        '</code></pre>'
+#    )
 
 def run_wif_for_test_file_at_path(path):
     cmd = get_wif_command(path)

@@ -1,0 +1,14 @@
+<!doctype html>
+<html>
+{% load static %}
+<head>
+    <meta charset="UTF-8">
+    <link href="https://fonts.googleapis.com/css?family=Ubuntu" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="{% static 'server/style.css' %}"/>
+    <link rel="shortcut icon" type="image/png" href="{% static 'server/favicon.ico' %}"/>
+    <title>{{page_title}}</title>
+</head>
+<body>
+{% block content %}{% endblock %}
+</body>
+</html>

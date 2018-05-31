@@ -69,12 +69,13 @@ class RunWebInjectFrameWorkTests(TestCase):
         self.assertContains(response, '</code></pre>')
         self.assertContains(response, 'Result at: http')
         self._assertRegex(response, r'\sFailed Positive Verification') # i.e. no ANSI code like 1;33m
+        self.assertContains(response, 'style.css')
 
+# \Apache24\bin\httpd -k restart
 
 # Post POC Hardening Tests
-#   - Parameter to remove ANSI colour codes from output
-#   - Start and End of test run logged in http log
-#   - Alter message displayed for test run
+#   - Add stylesheet for test run
+#   - Add a favicon
 #   - Prepend a WEBINJECT TEST PASSED or WEBINJECT TEST FAILED message (in correct colours)
 #   - Prepend a WEBINJECT ERROR message, return 500 (in red)
 #   - Add appropriate wif.pl switches

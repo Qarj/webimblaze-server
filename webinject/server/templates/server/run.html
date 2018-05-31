@@ -1,0 +1,14 @@
+{% extends "public/base.html" %}
+
+{% block content %}
+
+{% if error %}
+    <h4>{{error}}</h4>
+{% else %}
+    <h2>{{ page_heading }}</h2>
+    <br />
+    <br />
+    <pre><code>{{ result_stdout }}</code></pre>
+{% endif %}
+
+{% endblock %}
