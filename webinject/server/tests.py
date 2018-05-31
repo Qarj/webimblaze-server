@@ -68,13 +68,28 @@ class RunWebInjectFrameWorkTests(TestCase):
         self.assertContains(response, '<pre><code>')
         self.assertContains(response, '</code></pre>')
         self.assertContains(response, 'Result at: http')
+        self._assertRegex(response, r'\sFailed Positive Verification') # i.e. no ANSI code like 1;33m
 
 
-# POC Tests
+# Post POC Hardening Tests
+#   - Parameter to remove ANSI colour codes from output
+#   - Start and End of test run logged in http log
+#   - Alter message displayed for test run
+#   - Prepend a WEBINJECT TEST PASSED or WEBINJECT TEST FAILED message (in correct colours)
+#   - Prepend a WEBINJECT ERROR message, return 500 (in red)
+#   - Add appropriate wif.pl switches
+#   - Multi proto should be in a different batch
+#   - Can supply custom batch name
+#   - Can supply custom target
+#   - Search for wif.pl in known installation locations
+#   - Index page gives examples of how to run tests
+#   - Result location parsed out and made clickable, prepended
+#   - Time that it takes to run slow displayed on index
+
 
 # MVP Tests
-#   - Parameter to remove ANSI colour codes from output
 #   - POST URL server/submit with POSTBODY of webinject test cases.
+#   - form for posting a test
 
 
 ## https://cgoldberg.github.io/python-unittest-tutorial/

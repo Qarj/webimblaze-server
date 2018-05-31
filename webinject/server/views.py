@@ -34,7 +34,7 @@ def run_wif_for_test_file_at_path(path):
 
 def get_wif_command(path):
 
-    cmd = ['perl', wif_location(), path, '--env', 'DEV', '--target', 'team1', '--batch', 'WebInject-Server']
+    cmd = ['perl', wif_location(), path, '--env', 'DEV', '--target', 'team1', '--batch', 'WebInject-Server', '--no-update-config']
     return cmd
 
 def wif_location():
