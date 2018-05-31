@@ -71,9 +71,9 @@ class RunWebInjectFrameWorkTests(TestCase):
 
 
 # POC Tests
-#   - GET URL server/run?path=examples%2Ftest.xml will run examples/test.xml and return result
 
 # MVP Tests
+#   - Parameter to remove ANSI colour codes from output
 #   - POST URL server/submit with POSTBODY of webinject test cases.
 
 
