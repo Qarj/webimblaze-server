@@ -4,7 +4,7 @@
     id="10"
     description1="Run a long running test"
     method="get"
-    url="http://127.0.0.1:8000/server/run/?path=examples%2Fslow.xml"
+    url="http://127.0.0.1/webinject/server/run/?path=examples%2Fslow.xml"
     verifypositive1="Sorry that took so long"
 />
 
