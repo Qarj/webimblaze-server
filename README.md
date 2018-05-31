@@ -43,7 +43,7 @@ Apache and Python must be both 32 bit or 64 bit. 32 bit is recommended for Windo
 
 From Apache Lounge https://www.apachelounge.com/download/ download Win32 zip file - not 64 bit, then extract so C:\Apache24\bin folder is available.
 
-From Admin terminal, `cd C:\Apache\bin` then `httpd -k install` followed by `httpd -k start` (port 80 will need to be free for this to work)
+From Admin terminal, `cd C:\Apache24\bin` then `httpd -k install` followed by `httpd -k start` (port 80 will need to be free for this to work)
 
 ### Install mod_wsgi-express
 
@@ -83,7 +83,7 @@ then uncomment `Include conf/extra/httpd-vhosts.conf`
 
 Backup `httpd-vhosts.conf` then overwrite it with the mod_wsgi Apache settings
 ```
-C:\Apache24\conf\extra\httpd-vhosts.conf C:\Apache24\conf\extra\httpd-vhosts_backup.conf
+copy C:\Apache24\conf\extra\httpd-vhosts.conf C:\Apache24\conf\extra\httpd-vhosts_backup.conf
 mod_wsgi-express module-config > C:\Apache24\conf\extra\httpd-vhosts.conf
 ```
 
