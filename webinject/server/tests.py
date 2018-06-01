@@ -78,6 +78,7 @@ class RunWebInjectFrameWorkTests(TestCase):
         self.assertContains(response, 'class="pass">WEBINJECT TEST PASSED<')
         self._assertNotRegex(response, r'Batch ')
         self._assertNotRegex(response, r'Target ')
+        self._assertRegex(response, r'a href="[^"]*results_[0-9]{4}')
 
     def test_run_simple_test_in_webinject_examples_with_options(self):
         response = self.runit('examples/test.xml', False, batch='CustomBatch', target='team2')
@@ -99,11 +100,10 @@ class RunWebInjectFrameWorkTests(TestCase):
 # \Apache24\bin\httpd -k restart
 
 # Post POC Hardening Tests
-#   - Can supply custom target
-#   - Search for wif.pl in known installation locations
+#   - Index page has style.css
 #   - Index page gives examples of how to run tests
-#   - Result location parsed out and made clickable, prepended
 #   - Time that it takes to run slow displayed on index
+#   - Logo improved - plain blue S with alpha
 
 
 # MVP Tests

@@ -5,7 +5,7 @@ from django.http import HttpResponseRedirect, HttpResponse
 from django.shortcuts import render
 from django.urls import reverse
 from itertools import chain
-import subprocess, re
+import subprocess, re, os.path
 
 def index(request):
     return HttpResponse("Hello, world. You're at the Webinject Server index.")
@@ -20,6 +20,7 @@ def run(request):
     print ('Finished existing test execution:', path)
 
     http_status, result_status, result_status_message = get_status(result_stdout)
+    result_link = get_result_link(result_stdout)
     options = get_options_summary(batch, target)
 
     page_title = path
@@ -32,11 +33,19 @@ def run(request):
         'result_stdout': result_stdout,
         'result_status': result_status,
         'result_status_message': result_status_message,
+        'result_link': result_link,
         'options': options,
         'error': error,
     }
     
     return render(request, 'server/run.html', context, status=http_status)
+
+def get_result_link(result_stdout):
+    m = re.search(r'Result at: ([^\s]*)', result_stdout)
+    if (m):
+        return m.group(1)
+    else:
+        return '/DEV/Summary.xml'
 
 def get_options_summary(batch, target):
 
@@ -95,4 +104,14 @@ def get_wif_command(path, batch, target):
     return ['perl', wif_location(), path, '--env', 'DEV', '--target', target, '--batch', batch , '--no-update-config']
 
 def wif_location():
-    return r'C:\git\WebInject-Framework\wif.pl'
+    locations = []
+    locations.append(r'D:\WebInjectSERVER')
+    locations.append(r'C:\WebInjectSERVER')
+    locations.append(r'C:\git\WebInject-Framework')
+    locations.append(r'C:\WebInject')
+    locations.append(r'D:\WebInject')
+    locations.append(r'C:\WebInject-Framework')
+    for l in locations:
+        if ( os.path.isfile(l+r'\wif.pl') ):
+            return l+r'\wif.pl'
+    return ('WebInject Framework wif.pl file not found - suggest deploying to C:\\WebInjectSERVER\\wif.pl \n\n')
