@@ -12,6 +12,12 @@
     <h2>Run an existing test example - use * instead of %2F for folder separator</h2>
     <h4><a href="/webinject/server/run/?path=examples*test.xml" class="normal">http://localhost/webinject/server/run/?path=examples*test.xml</a></h4>
     
+    <h2>Specify batch name and target options</h2>
+    <h4><a href="/webinject/server/run/?path=examples*test.xml&batch=MyBatch&target=team2" class="normal">http://localhost/webinject/server/run/?path=examples*test.xml&batch=MyBatch&target=team2</a></h4>
+
+    <h2>Slow running test - approx 16 seconds to prove concurrency</h2>
+    <h4><a href="/webinject/server/run/?path=examples*slow.xml" class="normal">http://localhost/webinject/server/run/?path=examples*slow.xml</a></h4>
+
 {% endif %}
 
 {% endblock %}

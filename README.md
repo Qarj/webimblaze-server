@@ -2,7 +2,7 @@
 
 WebInject Server is a project for running WebInject over http.
 
-Run an existing script via a GET. Example: http://localhost/webinject/server/run/?path=examples%2Ftest.xml
+Run an existing script via a GET. Example: http://localhost/webinject/server/run/?path=examples*test.xml
 
 Or submit a test script to run using POST.
 
