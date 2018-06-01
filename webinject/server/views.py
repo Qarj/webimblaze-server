@@ -12,9 +12,10 @@ def index(request):
 
 def run(request):
     path = request.GET.get('path', None)
+    batch = request.GET.get('batch', None)
 
     print ('Started existing test execution:', path)
-    result_stdout = run_wif_for_test_file_at_path(path)
+    result_stdout = run_wif_for_test_file_at_path(path, batch)
     print ('Finished existing test execution:', path)
 
     http_status, result_status, result_status_message = get_status(result_stdout)
@@ -29,6 +30,7 @@ def run(request):
         'result_stdout': result_stdout,
         'result_status': result_status,
         'result_status_message': result_status_message,
+        'batch': batch,
         'error': error,
     }
     
@@ -41,16 +43,19 @@ def get_status(result_stdout):
         return 200, 'fail', 'WEBINJECT TEST FAILED'
     return 500, 'error', 'WEBINJECT TEST ERROR'
 
-def run_wif_for_test_file_at_path(path):
-    cmd = get_wif_command(path)
+def run_wif_for_test_file_at_path(path, batch):
+    cmd = get_wif_command(path, batch)
     proc = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, stdin=subprocess.PIPE)
     output, errors = proc.communicate()
     decoded = output.decode('cp850') # western european Windows code page is cp850
     return decoded
 
-def get_wif_command(path):
+def get_wif_command(path, batch):
 
-    cmd = ['perl', wif_location(), path, '--env', 'DEV', '--target', 'team1', '--batch', 'WebInject-Server', '--no-update-config']
+    if (not batch):
+        batch = 'WebInject-Server'
+
+    cmd = ['perl', wif_location(), path, '--env', 'DEV', '--target', 'team1', '--batch', batch , '--no-update-config']
     return cmd
 
 def wif_location():

@@ -1,8 +1,8 @@
-start perl ..\..\WebInject-Framework\wif.pl ../webinject-server/tests/_multi_1.xml
+start perl ..\..\WebInject-Framework\wif.pl ../webinject-server/tests/_multi_1.xml --batch multi_parent
 timeout 2
-start perl ..\..\WebInject-Framework\wif.pl ../webinject-server/tests/_multi_1.xml
+start perl ..\..\WebInject-Framework\wif.pl ../webinject-server/tests/_multi_1.xml --batch multi_parent
 timeout 2
-start perl ..\..\WebInject-Framework\wif.pl ../webinject-server/tests/_multi_1.xml
+start perl ..\..\WebInject-Framework\wif.pl ../webinject-server/tests/_multi_1.xml --batch multi_parent
 timeout 2
 
-perl ..\..\WebInject-Framework\wif.pl ../webinject-server/tests/_multi_2.xml
+perl ..\..\WebInject-Framework\wif.pl ../webinject-server/tests/_multi_2.xml --batch multi_parent
