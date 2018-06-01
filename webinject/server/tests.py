@@ -103,8 +103,6 @@ class RunWebInjectFrameWorkTests(TestCase):
 # \Apache24\bin\httpd -k restart
 
 # Post POC Hardening Tests
-#   - Time that it takes to run slow displayed on index
-#   - Logo improved - plain blue S with alpha
 
 
 # MVP Tests
