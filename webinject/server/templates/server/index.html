@@ -1,0 +1,17 @@
+{% extends "public/base.html" %}
+
+{% block content %}
+
+{% if error %}
+    <h4>{{error}}</h4>
+{% else %}
+    <h1>{{ page_heading }}</h1>
+    <h2>Run an existing test example</h2>
+    <h4><a href="/webinject/server/run/?path=examples%2Ftest.xml" class="normal">http://localhost/webinject/server/run/?path=examples%2Ftest.xml</a></h4>
+
+    <h2>Run an existing test example - use * instead of %2F for folder separator</h2>
+    <h4><a href="/webinject/server/run/?path=examples*test.xml" class="normal">http://localhost/webinject/server/run/?path=examples*test.xml</a></h4>
+    
+{% endif %}
+
+{% endblock %}

@@ -31,6 +31,9 @@ class ServerIndexViewTests(TestCase):
         """
         response = self.client.get(reverse('server:index'))
         self.assertEqual(response.status_code, 200)
+        self.assertContains(response, 'style.css')
+        self.assertContains(response, 'Run an existing test example')
+        self.assertContains(response, 'href="/webinject/server/run/?path=examples%2Ftest.xml"')
 
 class RunWebInjectFrameWorkTests(TestCase):
     
@@ -81,7 +84,7 @@ class RunWebInjectFrameWorkTests(TestCase):
         self._assertRegex(response, r'a href="[^"]*results_[0-9]{4}')
 
     def test_run_simple_test_in_webinject_examples_with_options(self):
-        response = self.runit('examples/test.xml', False, batch='CustomBatch', target='team2')
+        response = self.runit('examples*test.xml', False, batch='CustomBatch', target='team2')  # can use * instead of /
         self.assertContains(response, 'Result at: http')
         self.assertContains(response, '>Batch [CustomBatch] Target [team2]<')
 
@@ -100,7 +103,6 @@ class RunWebInjectFrameWorkTests(TestCase):
 # \Apache24\bin\httpd -k restart
 
 # Post POC Hardening Tests
-#   - Index page has style.css
 #   - Index page gives examples of how to run tests
 #   - Time that it takes to run slow displayed on index
 #   - Logo improved - plain blue S with alpha

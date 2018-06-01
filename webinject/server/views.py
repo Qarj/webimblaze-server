@@ -8,10 +8,20 @@ from itertools import chain
 import subprocess, re, os.path
 
 def index(request):
-    return HttpResponse("Hello, world. You're at the Webinject Server index.")
+    page_title = "WebInject Server"
+    page_heading = "Webinject Server"
+    error = ''
+
+    context = {
+        'page_title': page_title,
+        'page_heading': page_heading,
+        'error': error,
+    }
+    
+    return render(request, 'server/index.html', context)
 
 def run(request):
-    path = request.GET.get('path', None)
+    path = substitute_star_with_slash( request.GET.get('path', None) )
     batch = request.GET.get('batch', None)
     target = request.GET.get('target', None)
 
@@ -39,6 +49,9 @@ def run(request):
     }
     
     return render(request, 'server/run.html', context, status=http_status)
+
+def substitute_star_with_slash(path):
+    return path.replace('*','/')
 
 def get_result_link(result_stdout):
     m = re.search(r'Result at: ([^\s]*)', result_stdout)
