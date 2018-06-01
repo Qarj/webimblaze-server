@@ -5,7 +5,7 @@ from django.http import HttpResponseRedirect, HttpResponse
 from django.shortcuts import render
 from django.urls import reverse
 from itertools import chain
-import subprocess
+import subprocess, re
 
 def index(request):
     return HttpResponse("Hello, world. You're at the Webinject Server index.")
@@ -17,6 +17,8 @@ def run(request):
     result_stdout = run_wif_for_test_file_at_path(path)
     print ('Finished existing test execution:', path)
 
+    http_status, result_status, result_status_message = get_status(result_stdout)
+
     page_title = path
     page_heading = 'Run existing test: ' + path
     error = ''
@@ -25,18 +27,19 @@ def run(request):
         'page_title': page_title,
         'page_heading': page_heading,
         'result_stdout': result_stdout,
+        'result_status': result_status,
+        'result_status_message': result_status_message,
         'error': error,
     }
     
-    return render(request, 'server/run.html', context)
+    return render(request, 'server/run.html', context, status=http_status)
 
-#    return HttpResponse (
-#        'Run existing test:' + path +
-#        '\n<br /><br />\n' +
-#        '<pre><code>' +
-#        response +
-#        '</code></pre>'
-#    )
+def get_status(result_stdout):
+    if ( re.search(r'(Test Cases Failed: 0)', result_stdout) ):
+        return 200, 'pass', 'WEBINJECT TEST PASSED'
+    if ( re.search(r'(Test Cases Failed: [1-9])', result_stdout) ):
+        return 200, 'fail', 'WEBINJECT TEST FAILED'
+    return 500, 'error', 'WEBINJECT TEST ERROR'
 
 def run_wif_for_test_file_at_path(path):
     cmd = get_wif_command(path)

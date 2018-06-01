@@ -6,6 +6,7 @@
     <h4>{{error}}</h4>
 {% else %}
     <h2>{{ page_heading }}</h2>
+    <h4 class="{{ result_status }}">{{ result_status_message }}</h4>
     <pre><code>{{ result_stdout }}</code></pre>
 {% endif %}
 

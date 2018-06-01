@@ -63,21 +63,28 @@ class RunWebInjectFrameWorkTests(TestCase):
     #
 
     def test_run_simple_test_in_webinject_examples(self):
-        response = self.runit('examples/test.xml', True)
+        response = self.runit('examples/test.xml', False)
         self.assertContains(response, 'Test that WebInject can run a very basic test')
         self.assertContains(response, '<pre><code>')
         self.assertContains(response, '</code></pre>')
         self.assertContains(response, 'Result at: http')
         self._assertRegex(response, r'\sFailed Positive Verification') # i.e. no ANSI code like 1;33m
         self.assertContains(response, 'style.css')
+        self.assertContains(response, 'class="pass">WEBINJECT TEST PASSED<')
+
+    def test_run_failing_test_webinject_examples(self):
+        response = self.runit('examples/fail.xml', False)
+        self.assertContains(response, 'Test Cases Passed: 0')
+        self.assertContains(response, 'class="fail">WEBINJECT TEST FAILED<')
+
+    def test_run_non_existing_test_is_an_error(self):
+        response = self.runit('examples/testdoesnotexist.xml', False)
+        self._assertRegex(response, r'class="error">WEBINJECT TEST ERROR<')
+        self.assertEqual(500, response.status_code, 'Response code 500 not found, was ' + str(response.status_code))
 
 # \Apache24\bin\httpd -k restart
 
 # Post POC Hardening Tests
-#   - Add a favicon
-#   - Prepend a WEBINJECT TEST PASSED or WEBINJECT TEST FAILED message (in correct colours)
-#   - Prepend a WEBINJECT ERROR message, return 500 (in red)
-#   - Add appropriate wif.pl switches
 #   - Multi proto should be in a different batch
 #   - Can supply custom batch name
 #   - Can supply custom target

@@ -123,6 +123,7 @@ table {
 .pass { color:#5BAB03; font-weight:bold; }
 .fail { color:#FF5940; font-weight:bold; }
 .pend { color:#89DDFF; font-weight:bold; }
+.error { color:#F4E542; font-weight:bold; }
 
 .bold {
 	font-size: 19px;
