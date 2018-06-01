@@ -38,10 +38,13 @@ class RunWebInjectFrameWorkTests(TestCase):
     # test helpers
     #
 
-    def runit(self, path, debug=False, batch=''):
-        url = my_reverse('server:run', query_kwargs={'path': path})
+    def runit(self, path, debug=False, batch='', target=''):
+        kwargs={'path': path}
         if (batch):
-            url = my_reverse('server:run', query_kwargs={'path': path, 'batch': batch})
+            kwargs['batch'] = batch
+        if (target):
+            kwargs['target'] = target
+        url = my_reverse('server:run', query_kwargs=kwargs)
         return self._get_url(url, debug)
 
     def _get_url(self, url, debug=False):
@@ -65,7 +68,7 @@ class RunWebInjectFrameWorkTests(TestCase):
     #
 
     def test_run_simple_test_in_webinject_examples(self):
-        response = self.runit('examples/test.xml', False, batch='CustomBatch')
+        response = self.runit('examples/test.xml', False)
         self.assertContains(response, 'Test that WebInject can run a very basic test')
         self.assertContains(response, '<pre><code>')
         self.assertContains(response, '</code></pre>')
@@ -73,13 +76,20 @@ class RunWebInjectFrameWorkTests(TestCase):
         self._assertRegex(response, r'\sFailed Positive Verification') # i.e. no ANSI code like 1;33m
         self.assertContains(response, 'style.css')
         self.assertContains(response, 'class="pass">WEBINJECT TEST PASSED<')
-        self.assertContains(response, '>Batch [CustomBatch]<')
+        self._assertNotRegex(response, r'Batch ')
+        self._assertNotRegex(response, r'Target ')
+
+    def test_run_simple_test_in_webinject_examples_with_options(self):
+        response = self.runit('examples/test.xml', False, batch='CustomBatch', target='team2')
+        self.assertContains(response, 'Result at: http')
+        self.assertContains(response, '>Batch [CustomBatch] Target [team2]<')
 
     def test_run_failing_test_webinject_examples(self):
-        response = self.runit('examples/fail.xml', False)
+        response = self.runit('examples/fail.xml', False, target='team2')
         self.assertContains(response, 'Test Cases Passed: 0')
         self.assertContains(response, 'class="fail">WEBINJECT TEST FAILED<')
-        self._assertNotRegex(response, r'>Batch \[\]<')
+        self._assertNotRegex(response, r'Batch \[\]')
+        self.assertContains(response, '>Target [team2]<')
 
     def test_run_non_existing_test_is_an_error(self):
         response = self.runit('examples/testdoesnotexist.xml', False)

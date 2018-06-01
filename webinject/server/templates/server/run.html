@@ -7,8 +7,8 @@
 {% else %}
     <h2>{{ page_heading }}</h2>
     <h4 class="{{ result_status }}">{{ result_status_message }}</h4>
-    {% if batch %}
-    <h5>Batch [{{ batch }}]</h5>
+    {% if options %}
+    <h5>{{ options }}</h5>
     {% endif %}
     <pre><code>{{ result_stdout }}</code></pre>
 {% endif %}

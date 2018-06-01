@@ -13,12 +13,14 @@ def index(request):
 def run(request):
     path = request.GET.get('path', None)
     batch = request.GET.get('batch', None)
+    target = request.GET.get('target', None)
 
     print ('Started existing test execution:', path)
-    result_stdout = run_wif_for_test_file_at_path(path, batch)
+    result_stdout = run_wif_for_test_file_at_path(path, batch, target)
     print ('Finished existing test execution:', path)
 
     http_status, result_status, result_status_message = get_status(result_stdout)
+    options = get_options_summary(batch, target)
 
     page_title = path
     page_heading = 'Run existing test: ' + path
@@ -30,11 +32,43 @@ def run(request):
         'result_stdout': result_stdout,
         'result_status': result_status,
         'result_status_message': result_status_message,
-        'batch': batch,
+        'options': options,
         'error': error,
     }
     
     return render(request, 'server/run.html', context, status=http_status)
+
+def get_options_summary(batch, target):
+
+    # this is to prevent a leading space if we have a Target but no Batch
+    options_summary = summaryBuilder()
+    options_summary.append_non_blank_value(batch, 'Batch')
+    options_summary.append_non_blank_value(target, 'Target')
+
+    return options_summary.summary
+
+class summaryBuilder:
+
+    already_appended_item = False
+    summary = ''
+    
+    def __init__(self):
+        self.already_appended_item = False
+        self.summary = ''
+
+    def append_non_blank_value(self, value, desc):
+        if (not value):
+            return
+        if (self.already_appended_item):
+            self.summary += ' ' + self.formatted(value, desc)
+            return 
+        else:
+            self.already_appended_item = True
+            self.summary += self.formatted(value, desc)
+            return
+
+    def formatted(self, value, desc):
+        return desc + ' [' + value + ']'
 
 def get_status(result_stdout):
     if ( re.search(r'(Test Cases Failed: 0)', result_stdout) ):
@@ -43,21 +77,22 @@ def get_status(result_stdout):
         return 200, 'fail', 'WEBINJECT TEST FAILED'
     return 500, 'error', 'WEBINJECT TEST ERROR'
 
-def run_wif_for_test_file_at_path(path, batch):
-    cmd = get_wif_command(path, batch)
+def run_wif_for_test_file_at_path(path, batch, target):
+    cmd = get_wif_command(path, batch, target)
     proc = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, stdin=subprocess.PIPE)
     output, errors = proc.communicate()
     decoded = output.decode('cp850') # western european Windows code page is cp850
     return decoded
 
-def get_wif_command(path, batch):
+def get_wif_command(path, batch, target):
 
     if (not batch):
         batch = 'WebInject-Server'
 
-    cmd = ['perl', wif_location(), path, '--env', 'DEV', '--target', 'team1', '--batch', batch , '--no-update-config']
-    return cmd
+    if (not target):
+        target = 'team1'
+
+    return ['perl', wif_location(), path, '--env', 'DEV', '--target', target, '--batch', batch , '--no-update-config']
 
 def wif_location():
     return r'C:\git\WebInject-Framework\wif.pl'
-
