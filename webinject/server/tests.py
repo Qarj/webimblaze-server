@@ -102,12 +102,9 @@ class RunWebInjectFrameWorkTests(TestCase):
 
 # \Apache24\bin\httpd -k restart
 
-# Post POC Hardening Tests
-
-
 # MVP Tests
 #   - POST URL server/submit with POSTBODY of webinject test cases.
-#   - form for posting a test
+#   - form for posting a test https://docs.djangoproject.com/en/2.0/topics/forms/
 
 
 ## https://cgoldberg.github.io/python-unittest-tutorial/

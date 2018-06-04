@@ -15,7 +15,6 @@
 
 ### ToDo
 * (POST) test case file can be provided in post request
-* config can be provided in post request
 * test target can be a previously unknown host - e.g. developer desktop
 
 ### Done
@@ -24,6 +23,11 @@
 
 ### ToDo
 * (POST) can post resources the test might need, e.g MyCv.docx, JobFeed.xml
+* View the resolved config for DEV
+* No need to provide opening and closing xml file tags
+* No need to provide case tags - separate by a blank line instead
+* No need to provide id numbers
+
 
 ### Done
 
