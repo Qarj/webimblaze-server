@@ -7,6 +7,8 @@ from django.urls import reverse
 from itertools import chain
 import subprocess, re, os.path
 
+from .forms import SubmitForm
+
 def index(request):
     page_title = "WebInject Server"
     page_heading = "Webinject Server"
@@ -128,3 +130,45 @@ def wif_location():
         if ( os.path.isfile(l+r'\wif.pl') ):
             return l+r'\wif.pl'
     return ('WebInject Framework wif.pl file not found - suggest deploying to C:\\WebInjectSERVER\\wif.pl \n\n')
+
+def submit(request):
+    if request.method == 'POST':
+        return _process_submit(request)
+            
+def _process_submit(request):
+    form = SubmitForm(request.POST)
+    if form.is_valid():
+        steps = form.cleaned_data['steps']
+    batch = request.POST.get('batch', None)
+    target = request.POST.get('target', None)
+
+    path = 'c:/git/webinject-server/temp/workfile.xml'
+    with open(path, 'w') as f:
+        f.write(steps)
+
+    print ('Started submitted test execution:', path)
+    result_stdout = run_wif_for_test_file_at_path(path, batch, target)
+    print ('Finished submitted test execution:', path)
+
+    http_status, result_status, result_status_message = get_status(result_stdout)
+    result_link = get_result_link(result_stdout)
+    options = get_options_summary(batch, target)
+
+    page_title = 'Fix me'
+    page_heading = 'Run submitted test ' + path
+    error = ''
+
+    context = {
+        'page_title': page_title,
+        'page_heading': page_heading,
+        'result_stdout': result_stdout,
+        'result_status': result_status,
+        'result_status_message': result_status_message,
+        'result_link': result_link,
+        'options': options,
+        'error': error,
+    }
+    
+    return render(request, 'server/run.html', context, status=http_status)
+    
+    

@@ -35,7 +35,7 @@ class ServerIndexViewTests(TestCase):
         self.assertContains(response, 'Run an existing test example')
         self.assertContains(response, 'href="/webinject/server/run/?path=examples%2Ftest.xml"')
 
-class RunWebInjectFrameWorkTests(TestCase):
+class WebInjectServerTests(TestCase):
     
     #
     # test helpers
@@ -57,6 +57,25 @@ class RunWebInjectFrameWorkTests(TestCase):
             print(response.content.decode('utf-8'), '\n')
         return response
 
+    def submit(self, steps, debug=False, batch='', target=''):
+        kwargs={}
+        if (batch):
+            kwargs['batch'] = batch
+        if (target):
+            kwargs['target'] = target
+        url = my_reverse('server:submit', query_kwargs=kwargs)
+        body = {'steps': steps}
+        return self._post_url_and_body(url, body, debug)
+
+    def _post_url_and_body(self, url, body, debug=False):
+        response = self.client.post(url, body)
+        if (debug):
+            print('\nDebug URL :', url)
+            print('\nDebug Body:', body)
+            print('\nDebug Response Content Start\n', response.content.decode('utf-8'), '\n')
+            print('\nDebug Response Content End\n')
+        return response
+
     def number_of_instances(self, response, target):
         return response.content.decode('utf-8').count(target)
 
@@ -67,7 +86,7 @@ class RunWebInjectFrameWorkTests(TestCase):
         self.assertNotRegex(response.content.decode('utf-8'), regex)
 
     #
-    # Run WebInject Framework Tests
+    # Run WebInject Framework existing test through WebInject Framework
     #
 
     def test_run_simple_test_in_webinject_examples(self):
@@ -99,6 +118,38 @@ class RunWebInjectFrameWorkTests(TestCase):
         response = self.runit('examples/testdoesnotexist.xml', False)
         self._assertRegex(response, r'class="error">WEBINJECT TEST ERROR<')
         self.assertEqual(500, response.status_code, 'Response code 500 not found, was ' + str(response.status_code))
+
+    #
+    # Submit test to run through WebInject-Framework
+    #
+
+    def test_can_submit_a_simple_test_and_see_result(self):
+        steps = """
+<testcases repeat="1">
+
+<case
+    id="10"
+    description1="Check that WebInject Server can run a simple submitted test"
+    method="cmd"
+    command="REM This and that"
+    verifypositive1="This and that"
+/>
+
+<case
+    id="20"
+    description1="Subsequent step - retry {RETRY}"
+    method="cmd"
+    command="REM Not much more - retry {RETRY}"
+    verifypositive="retry 0"
+    verifynegative="Nothing much"
+/>
+
+</testcases>
+"""        
+        
+        response = self.submit(steps, True)
+        self.assertContains(response, 'class="pass">WEBINJECT TEST PASSED<')
+        
 
 # \Apache24\bin\httpd -k restart
 

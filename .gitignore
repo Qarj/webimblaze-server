@@ -17,3 +17,6 @@ db.sqlite3
 *.dll
 *.exe
 TestResult.xml
+
+# This project
+temp/
