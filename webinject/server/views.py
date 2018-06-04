@@ -8,6 +8,7 @@ from itertools import chain
 import subprocess, re, os.path
 
 from .forms import SubmitForm
+from django.views.decorators.csrf import csrf_exempt
 
 def index(request):
     page_title = "WebInject Server"
@@ -131,10 +132,15 @@ def wif_location():
             return l+r'\wif.pl'
     return ('WebInject Framework wif.pl file not found - suggest deploying to C:\\WebInjectSERVER\\wif.pl \n\n')
 
+@csrf_exempt
 def submit(request):
     if request.method == 'POST':
         return _process_submit(request)
-            
+    else:
+        form = SubmitForm()
+
+    return render(request, 'server/submit.html', {'form': form})
+
 def _process_submit(request):
     form = SubmitForm(request.POST)
     if form.is_valid():
@@ -170,5 +176,4 @@ def _process_submit(request):
     }
     
     return render(request, 'server/run.html', context, status=http_status)
-    
-    
+

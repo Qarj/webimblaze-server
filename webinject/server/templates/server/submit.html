@@ -1,0 +1,14 @@
+{% extends "public/base.html" %}
+
+{% block content %}
+
+    <h2>This is the page heading</h2>
+    <h4>Paste the test steps here</h4>
+
+    <form action="{% url 'server:submit' %}" method="post">
+        {{ form }}
+        <input type="submit" value="Submit" />
+    </form>
+
+
+{% endblock %}

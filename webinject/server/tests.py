@@ -50,6 +50,10 @@ class WebInjectServerTests(TestCase):
         url = my_reverse('server:run', query_kwargs=kwargs)
         return self._get_url(url, debug)
 
+    def get_submit(self, debug=False):
+        url = my_reverse('server:submit')
+        return self._get_url(url, debug)
+
     def _get_url(self, url, debug=False):
         response = self.client.get(url)
         if (debug):
@@ -147,15 +151,37 @@ class WebInjectServerTests(TestCase):
 </testcases>
 """        
         
-        response = self.submit(steps, True)
+        response = self.submit(steps, debug=False)
         self.assertContains(response, 'class="pass">WEBINJECT TEST PASSED<')
-        
+
+    def test_can_get_an_empty_submit_form(self):
+        response = self.get_submit(debug=True)
+        self.assertContains(response, 'Paste the test steps here')
 
 # \Apache24\bin\httpd -k restart
 
 # MVP Tests
-#   - POST URL server/submit with POSTBODY of webinject test cases.
-#   - form for posting a test https://docs.djangoproject.com/en/2.0/topics/forms/
+# Can get form
+# Form has heading
+# Custom form rendering (removes steps)
+# Custom form rendering - make text area much larger
+# Custom form rendering - background colour of text area is light grey
+# Custom form rendering - Style submit button
+# Can run more than one test at once
+# Temporary file deletion
+# Is dedupe of code possible between submit and run?
+# What if form doesn't pass validation? How is this possible?
+# Can specify batch name for submit
+# Can specify target for submit
+# Submit form has page title
+# Index has link to submit
+# Submit form has hello world example
+# Submit form has get totaljobs homepage example
+# Submit form has get cwjobs homepage example - selenium!
+# Can post the form from NUNIT
+
+# Ref  - form for posting a test https://docs.djangoproject.com/en/2.0/topics/forms/
+
 
 
 ## https://cgoldberg.github.io/python-unittest-tutorial/
