@@ -157,12 +157,14 @@ class WebInjectServerTests(TestCase):
     def test_can_get_an_empty_submit_form(self):
         response = self.get_submit(debug=True)
         self.assertContains(response, 'Paste the test steps here')
+        self.assertContains(response, 'Submit test for immediate run')
+        self.assertContains(response, '>submit<') # page title
+        self._assertNotRegex(response, '>Steps:<')
+
 
 # \Apache24\bin\httpd -k restart
 
 # MVP Tests
-# Can get form
-# Form has heading
 # Custom form rendering (removes steps)
 # Custom form rendering - make text area much larger
 # Custom form rendering - background colour of text area is light grey

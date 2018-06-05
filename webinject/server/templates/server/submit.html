@@ -2,12 +2,27 @@
 
 {% block content %}
 
-    <h2>This is the page heading</h2>
+    <h2>{{ page_heading }}</h2>
     <h4>Paste the test steps here</h4>
 
     <form action="{% url 'server:submit' %}" method="post">
-        {{ form }}
-        <input type="submit" value="Submit" />
+        <table id="steps_table">
+            <tr>
+                <th>
+                    <label for="id_steps"></label>
+                </th>
+            </tr>
+            <tr>
+                <td>
+                    <textarea name="steps" cols="120" rows="40" required id="id_steps"></textarea>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <input type="submit" value="Submit" />
+                </td>
+            </tr>
+        </table>
     </form>
 
 

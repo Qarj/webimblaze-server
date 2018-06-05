@@ -139,7 +139,16 @@ def submit(request):
     else:
         form = SubmitForm()
 
-    return render(request, 'server/submit.html', {'form': form})
+    page_title = 'submit'
+    page_heading = 'Submit test for immediate run'
+
+    context = {
+        'page_title': page_title,
+        'page_heading': page_heading,
+        'form': form,
+    }
+
+    return render(request, 'server/submit.html', context)
 
 def _process_submit(request):
     form = SubmitForm(request.POST)
