@@ -88,7 +88,11 @@ table {
 .fail { color:#FF5940; font-weight:bold; }
 .pend { color:#89DDFF; font-weight:bold; }
 .error { color:#F4E542; font-weight:bold; }
-.steps { background-color:#AAA;} 
+
+.steps {
+    background-color:#AAA;
+    font-family: 'Source Code Pro', monospace;
+} 
 
 .bold {
 	font-size: 19px;
@@ -111,3 +115,29 @@ table {
 }
 
 /*tr { vertical-align: text-top; } */
+
+.submit-button {
+ 	font-family: 'Ubuntu', sans-serif;
+ 	font-weight:bold;
+    background: #016ABC;
+    color: #aaa;
+    border: 3px solid #eee;
+    border-color: #aaa;
+    border-radius: 5px;
+    text-shadow:none;
+	font-size: 20px;
+	line-height: 25px;
+}
+
+.submit-button:hover {
+	font-family: 'Ubuntu', sans-serif;
+ 	font-weight:bold;
+    background: #aaa;
+    color: #016ABC;
+    border: 5px solid #eee;
+    border-color: #aaa;
+    border-radius: 5px;
+    text-shadow:none;
+	font-size: 20px;
+	line-height: 25px;
+}
