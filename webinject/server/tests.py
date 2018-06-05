@@ -33,7 +33,8 @@ class ServerIndexViewTests(TestCase):
         self.assertEqual(response.status_code, 200)
         self.assertContains(response, 'style.css')
         self.assertContains(response, 'Run an existing test example')
-        self.assertContains(response, 'href="/webinject/server/run/?path=examples%2Ftest.xml"')
+        self.assertContains(response, 'href="run/?path=examples%2Ftest.xml"')
+        self.assertContains(response, 'Submit test steps for immediate run')
 
 class WebInjectServerTests(TestCase):
     
@@ -162,20 +163,18 @@ class WebInjectServerTests(TestCase):
         self._assertNotRegex(response, '>Steps:<')
         self.assertContains(response, 'cols="140" rows="40"')
         self.assertContains(response, 'class="steps"')
+        self.assertContains(response, 'class="submit-button"')
 
 
 # \Apache24\bin\httpd -k restart
 
 # MVP Tests
-# Custom form rendering - background colour of text area is light grey
-# Custom form rendering - Style submit button
 # Can run more than one test at once
 # Temporary file deletion
 # Is dedupe of code possible between submit and run?
 # What if form doesn't pass validation? How is this possible?
 # Can specify batch name for submit
 # Can specify target for submit
-# Submit form has page title
 # Index has link to submit
 # Submit form has hello world example
 # Submit form has get totaljobs homepage example
