@@ -164,6 +164,8 @@ class WebInjectServerTests(TestCase):
         self.assertContains(response, 'cols="140" rows="40"')
         self.assertContains(response, 'class="steps"')
         self.assertContains(response, 'class="submit-button"')
+        self.assertContains(response, 'Headless (http) example')
+        self.assertContains(response, 'Selenium example')
 
 
 # \Apache24\bin\httpd -k restart
@@ -175,10 +177,11 @@ class WebInjectServerTests(TestCase):
 # What if form doesn't pass validation? How is this possible?
 # Can specify batch name for submit
 # Can specify target for submit
-# Index has link to submit
 # Submit form has hello world example
 # Submit form has get totaljobs homepage example
 # Submit form has get cwjobs homepage example - selenium!
+# Tidy up Selenium example syntax
+# Tidy up html tags and formatting for two column layout in submit.html
 # Can post the form from NUNIT
 
 # Ref  - form for posting a test https://docs.djangoproject.com/en/2.0/topics/forms/
