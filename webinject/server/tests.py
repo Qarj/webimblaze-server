@@ -160,13 +160,13 @@ class WebInjectServerTests(TestCase):
         self.assertContains(response, 'Submit test for immediate run')
         self.assertContains(response, '>submit<') # page title
         self._assertNotRegex(response, '>Steps:<')
+        self.assertContains(response, 'cols="140" rows="40"')
+        self.assertContains(response, 'class="steps"')
 
 
 # \Apache24\bin\httpd -k restart
 
 # MVP Tests
-# Custom form rendering (removes steps)
-# Custom form rendering - make text area much larger
 # Custom form rendering - background colour of text area is light grey
 # Custom form rendering - Style submit button
 # Can run more than one test at once

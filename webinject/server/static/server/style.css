@@ -14,30 +14,6 @@ body {
 	color: #aaa;
 }
 
-.simple-container {
-	max-width: 675px;
-	margin: 0 auto;
-	padding-top: 70px;
-	padding-bottom: 20px;
-}
-
-.simple-print {
-	fill: white;
-	stroke: white;
-}
-.simple-print svg {
-	height: 100%;
-}
-
-.simple-close {
-	color: white;
-	border-color: white;
-}
-
-.simple-ext-info {
-	border-top: 1px solid #aaa;
-}
-
 p {
 	font-size: 16px;
 }
@@ -85,23 +61,11 @@ li {
 	line-height: 1.5em;
 }
 
-aside,
-[class *= "sidebar"],
-[id *= "sidebar"] {
-	max-width: 90%;
-	margin: 0 auto;
-	border: 1px solid lightgrey;
-	padding: 5px 15px;
-}
-
 @media (min-width: 1921px) {
 	body {
 		font-size: 18px;
 	}
 }
-
-
-
 
 a:hover, a:visited, a:link, a:active
 {
@@ -124,6 +88,7 @@ table {
 .fail { color:#FF5940; font-weight:bold; }
 .pend { color:#89DDFF; font-weight:bold; }
 .error { color:#F4E542; font-weight:bold; }
+.steps { background-color:#AAA;} 
 
 .bold {
 	font-size: 19px;
