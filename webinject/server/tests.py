@@ -24,6 +24,30 @@ def my_reverse(viewname, kwargs=None, query_kwargs=None):
 
     return url
 
+simple_steps = """
+<testcases repeat="1">
+
+<case
+    id="10"
+    description1="Check that WebInject Server can run a simple submitted test"
+    method="cmd"
+    command="REM This and that"
+    verifypositive1="This and that"
+/>
+
+<case
+    id="20"
+    description1="Subsequent step - retry {RETRY}"
+    method="cmd"
+    command="REM Not much more - retry {RETRY}"
+    verifypositive="retry 0"
+    verifynegative="Nothing much"
+/>
+
+</testcases>
+"""        
+
+
 class ServerIndexViewTests(TestCase):
     def test_index(self):
         """
@@ -51,9 +75,20 @@ class WebInjectServerTests(TestCase):
         url = my_reverse('server:run', query_kwargs=kwargs)
         return self._get_url(url, debug)
 
-    def get_submit(self, debug=False):
-        url = my_reverse('server:submit')
-        return self._get_url(url, debug)
+    def get_submit(self, debug=False, batch='', target=''):
+        return self._get_url( self._build_submit_url(batch, target), debug )
+
+    def submit(self, steps, debug=False, batch='', target=''):
+        body = {'steps': steps}
+        return self._post_url_and_body( self._build_submit_url(batch, target), body, debug )
+
+    def _build_submit_url(self, batch, target):
+        kwargs={}
+        if (batch):
+            kwargs['batch'] = batch
+        if (target):
+            kwargs['target'] = target
+        return my_reverse('server:submit', query_kwargs=kwargs)
 
     def _get_url(self, url, debug=False):
         response = self.client.get(url)
@@ -61,16 +96,6 @@ class WebInjectServerTests(TestCase):
             print('\nDebug URL:', url)
             print(response.content.decode('utf-8'), '\n')
         return response
-
-    def submit(self, steps, debug=False, batch='', target=''):
-        kwargs={}
-        if (batch):
-            kwargs['batch'] = batch
-        if (target):
-            kwargs['target'] = target
-        url = my_reverse('server:submit', query_kwargs=kwargs)
-        body = {'steps': steps}
-        return self._post_url_and_body(url, body, debug)
 
     def _post_url_and_body(self, url, body, debug=False):
         response = self.client.post(url, body)
@@ -108,9 +133,9 @@ class WebInjectServerTests(TestCase):
         self._assertRegex(response, r'a href="[^"]*results_[0-9]{4}')
 
     def test_run_simple_test_in_webinject_examples_with_options(self):
-        response = self.runit('examples*test.xml', False, batch='CustomBatch', target='team2')  # can use * instead of /
+        response = self.runit('examples*test.xml', False, batch='RunBatch', target='team2')  # can use * instead of /
         self.assertContains(response, 'Result at: http')
-        self.assertContains(response, '>Batch [CustomBatch] Target [team2]<')
+        self.assertContains(response, '>Batch [RunBatch] Target [team2]<')
 
     def test_run_failing_test_webinject_examples(self):
         response = self.runit('examples/fail.xml', False, target='team2')
@@ -129,35 +154,19 @@ class WebInjectServerTests(TestCase):
     #
 
     def test_can_submit_a_simple_test_and_see_result(self):
-        steps = """
-<testcases repeat="1">
-
-<case
-    id="10"
-    description1="Check that WebInject Server can run a simple submitted test"
-    method="cmd"
-    command="REM This and that"
-    verifypositive1="This and that"
-/>
-
-<case
-    id="20"
-    description1="Subsequent step - retry {RETRY}"
-    method="cmd"
-    command="REM Not much more - retry {RETRY}"
-    verifypositive="retry 0"
-    verifynegative="Nothing much"
-/>
-
-</testcases>
-"""        
         
-        response = self.submit(steps, debug=False)
+        response = self.submit(simple_steps, debug=False)
         self.assertContains(response, 'class="pass">WEBINJECT TEST PASSED<')
         self.assertContains(response, '>Result<')
 
+    def test_can_submit_a_test_with_batch_and_target(self):
+        
+        response = self.submit(simple_steps, batch='SubmitBatch', target='team2', debug=False)
+        self.assertContains(response, 'class="pass">WEBINJECT TEST PASSED<')
+        self.assertContains(response, '>Batch [SubmitBatch] Target [team2]<')
+
     def test_can_get_an_empty_submit_form(self):
-        response = self.get_submit(debug=True)
+        response = self.get_submit(debug=False)
         self.assertContains(response, 'Paste the test steps here')
         self.assertContains(response, 'Submit test for immediate run')
         self.assertContains(response, '>Submit<') # page title
@@ -168,12 +177,17 @@ class WebInjectServerTests(TestCase):
         self.assertContains(response, 'Headless (http) example')
         self.assertContains(response, 'Selenium example')
 
+    def test_can_get_an_empty_submit_form_with_batch_and_target(self):
+        response = self.get_submit(batch='MyBatch', target='MyTarget', debug=False)
+        self.assertContains(response, '/server/submit/?batch=MyBatch&amp;target=MyTarget')
 
 # \Apache24\bin\httpd -k restart
 
 # MVP Tests
     # Can specify batch name for submit
     # Can specify target for submit
+    # Index - example with batch and target name
+    # Is is possible to make a generic builder?
     # Can post the form from NUNIT
     # add a canary page
 

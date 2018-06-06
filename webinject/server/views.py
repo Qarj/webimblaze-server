@@ -140,21 +140,60 @@ def submit(request):
     else:
         form = SubmitForm()
 
+    batch = request.GET.get('batch', None)
+    target = request.GET.get('target', None)
     page_title = 'Submit'
     page_heading = 'Submit test for immediate run'
+    query_string = get_query_string(batch, target)
 
     context = {
         'page_title': page_title,
         'page_heading': page_heading,
+        'batch': batch,
+        'target': target,
+        'query_string': query_string,
         'form': form,
     }
 
     return render(request, 'server/submit.html', context)
 
+def get_query_string(batch, target):
+
+    # this is to prevent a leading space if we have a Target but no Batch
+    options_summary = queryStringBuilder()
+    options_summary.append_non_blank_value(batch, 'batch')
+    options_summary.append_non_blank_value(target, 'target')
+
+    return options_summary.summary
+
+class queryStringBuilder:
+
+    already_appended_item = False
+    summary = ''
+    
+    def __init__(self):
+        self.already_appended_item = False
+        self.summary = ''
+
+    def append_non_blank_value(self, value, desc):
+        if (not value):
+            return
+        if (self.already_appended_item):
+            self.summary += '&' + self.formatted(value, desc)
+            return 
+        else:
+            self.already_appended_item = True
+            self.summary += '?' + self.formatted(value, desc)
+            return
+
+    def formatted(self, value, desc):
+        return desc + '=' + value
+
+
 def _process_submit(request):
     steps = request.POST.get('steps', None)
-    batch = request.POST.get('batch', None)
-    target = request.POST.get('target', None)
+    batch = request.GET.get('batch', None)
+    target = request.GET.get('target', None)
 
     path = _write_steps_to_random_filename_in_temp_folder(steps)
 

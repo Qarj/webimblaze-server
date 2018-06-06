@@ -5,7 +5,7 @@
     <h2>{{ page_heading }}</h2>
     <h4>Paste the test steps here</h4>
 
-    <form action="{% url 'server:submit' %}" method="post">
+    <form action="{% url 'server:submit' %}{{ query_string }}" method="post">
         <table id="steps_table">
             <tr>
                 <th>
