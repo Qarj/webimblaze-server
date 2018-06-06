@@ -235,11 +235,9 @@ def _remove_random_test_step_file_ignoring_os_errors(file_path):
 
 def canary(request):
 
-    #check_status_message = 'WebInject Framework found at ' + wif_location()
-    #check_status = 'pass'
     http_status = 200
-
-#    <p class="{{ check_status }}">{{ check_status_message }}</p>
+    result_status = 'pass'
+    result_status_message = 'All canary checks passed'
 
     canary_checks = formattedStringBuilder(initial_prefix='<p class="', next_prefix='<p class="', glue='">', suffix='</p>')
 
@@ -247,12 +245,25 @@ def canary(request):
          canary_checks.append_non_blank_value(wif_location(), 'fail')
          http_status = 500
     else:
-         canary_checks.append_non_blank_value('WebInject Framework found at ' + wif_location(), 'pass')
+         canary_checks.append_non_blank_value('OK --&gt; WebInject Framework found at ' + wif_location(), 'pass')
+#   <p class="pass">WebInject Framework found at ...</p>
+
+    wif_cmd = ['perl', wif_location(), '--help']
+    proc = subprocess.Popen(wif_cmd, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, stdin=subprocess.PIPE)
+    output, errors = proc.communicate()
+    decoded = output.decode('cp850') # western european Windows code page is cp850
+    if 'Usage: wif.pl' in decoded:
+        canary_checks.append_non_blank_value('OK --&gt; wif.pl can be executed - shows help info', 'pass')
+    else:
+        http_status = 500
+        canary_checks.append_non_blank_value('could not execute wif.pl to view help', 'fail')
+
+    if (http_status != 200):
+        result_status = 'fail'
+        result_status_message = 'Canary checks failed'
 
     page_title = 'Canary'
     page_heading = 'WebInject Server Canary'
-    result_status = 'pass'
-    result_status_message = 'All canary checks passed'
 
     context = {
         'page_title': page_title,
@@ -263,6 +274,3 @@ def canary(request):
     }
 
     return render(request, 'server/canary.html', context, status=http_status)
-
-    query_string.append_non_blank_value(batch, 'batch')
-    query_string.append_non_blank_value(target, 'target')
