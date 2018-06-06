@@ -164,6 +164,8 @@ def _process_submit(request):
     result_stdout = run_wif_for_test_file_at_path(path, batch, target)
     print ('Finished submitted test execution:', path)
 
+    _remove_random_test_step_file_ignoring_os_errors(path)
+
     http_status, result_status, result_status_message = get_status(result_stdout)
     result_link = get_result_link(result_stdout)
     options = get_options_summary(batch, target)
@@ -200,3 +202,9 @@ def _get_temp_folder_location_and_ensure_exists():
     temp_folder_path = script_path + '/../../temp/webinject-server'
     pathlib.Path(temp_folder_path).mkdir(parents=True, exist_ok=True)
     return temp_folder_path
+
+def _remove_random_test_step_file_ignoring_os_errors(file_path):
+    try:
+        os.remove(file_path)
+    except OSError:
+        pass
