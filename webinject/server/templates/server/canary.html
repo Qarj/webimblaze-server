@@ -7,7 +7,6 @@
     
     <br />
     
-    <p class="{{ check_status }}">{{ check_status_message }}</p>
-    
+    {% autoescape off %}{{ all_canary_check_results }}{% endautoescape %}
 
 {% endblock %}

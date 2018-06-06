@@ -235,14 +235,19 @@ def _remove_random_test_step_file_ignoring_os_errors(file_path):
 
 def canary(request):
 
-    check_status_message = 'WebInject Framework found at ' + wif_location()
-    check_status = 'pass'
+    #check_status_message = 'WebInject Framework found at ' + wif_location()
+    #check_status = 'pass'
+    http_status = 200
+
+#    <p class="{{ check_status }}">{{ check_status_message }}</p>
+
+    canary_checks = formattedStringBuilder(initial_prefix='<p class="', next_prefix='<p class="', glue='">', suffix='</p>')
 
     if 'not found' in wif_location():
-         check_status_message = wif_location()
-         check_status='fail'
-
-    http_status=200
+         canary_checks.append_non_blank_value(wif_location(), 'fail')
+         http_status = 500
+    else:
+         canary_checks.append_non_blank_value('WebInject Framework found at ' + wif_location(), 'pass')
 
     page_title = 'Canary'
     page_heading = 'WebInject Server Canary'
@@ -254,9 +259,10 @@ def canary(request):
         'page_heading': page_heading,
         'result_status': result_status,
         'result_status_message': result_status_message,
-        'check_status': check_status,
-        'check_status_message': check_status_message,
+        'all_canary_check_results': canary_checks.summary,
     }
 
     return render(request, 'server/canary.html', context, status=http_status)
-    
+
+    query_string.append_non_blank_value(batch, 'batch')
+    query_string.append_non_blank_value(target, 'target')
