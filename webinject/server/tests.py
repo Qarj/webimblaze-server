@@ -78,6 +78,10 @@ class WebInjectServerTests(TestCase):
     def get_submit(self, debug=False, batch='', target=''):
         return self._get_url( self._build_submit_url(batch, target), debug )
 
+    def canary(self, debug=False):
+        url = my_reverse('server:canary')
+        return self._get_url( url, debug )
+
     def submit(self, steps, debug=False, batch='', target=''):
         body = {'steps': steps}
         return self._post_url_and_body( self._build_submit_url(batch, target), body, debug )
@@ -181,12 +185,25 @@ class WebInjectServerTests(TestCase):
         response = self.get_submit(batch='MyBatch', target='MyTarget', debug=False)
         self.assertContains(response, '/server/submit/?batch=MyBatch&amp;target=MyTarget')
 
+    #
+    # Canary
+    #
+
+    def test_check_canary_page(self):
+        response = self.canary(debug=False)
+        self.assertContains(response, 'All canary checks passed')
+        self.assertContains(response, 'class="boldpass"')
+
+
 # \Apache24\bin\httpd -k restart
 
 # MVP Tests
-    # Is is possible to make a generic builder?
     # Can post the form from NUNIT
-    # add a canary page
+
+    # checks webinject framework can be found
+    # checks wif.pl is runnable
+    # checks DEV environment config exists
+    # checks DEV environment default target exists
 
 # Ref  - form for posting a test https://docs.djangoproject.com/en/2.0/topics/forms/
 

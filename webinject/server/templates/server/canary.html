@@ -1,0 +1,13 @@
+{% extends "public/base.html" %}
+
+{% block content %}
+
+    <h1>{{ page_heading }}</h1>
+    <p class="bold{{ result_status }}">{{ result_status_message }}</p>
+    
+    <br />
+    
+    <p class="{{ check_status }}">{{ check_status_message }}</p>
+    
+
+{% endblock %}

@@ -13,4 +13,6 @@ urlpatterns = [
 
     # ex: /server/submit/
     path('submit/', views.submit, name='submit'),
+
+    path('canary/', views.canary, name='canary'),
 ]

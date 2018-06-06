@@ -232,3 +232,31 @@ def _remove_random_test_step_file_ignoring_os_errors(file_path):
         os.remove(file_path)
     except OSError:
         pass
+
+def canary(request):
+
+    check_status_message = 'WebInject Framework found at ' + wif_location()
+    check_status = 'pass'
+
+    if 'not found' in wif_location():
+         check_status_message = wif_location()
+         check_status='fail'
+
+    http_status=200
+
+    page_title = 'Canary'
+    page_heading = 'WebInject Server Canary'
+    result_status = 'pass'
+    result_status_message = 'All canary checks passed'
+
+    context = {
+        'page_title': page_title,
+        'page_heading': page_heading,
+        'result_status': result_status,
+        'result_status_message': result_status_message,
+        'check_status': check_status,
+        'check_status_message': check_status_message,
+    }
+
+    return render(request, 'server/canary.html', context, status=http_status)
+    
