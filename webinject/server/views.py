@@ -140,7 +140,7 @@ def submit(request):
     else:
         form = SubmitForm()
 
-    page_title = 'submit'
+    page_title = 'Submit'
     page_heading = 'Submit test for immediate run'
 
     context = {
@@ -152,9 +152,7 @@ def submit(request):
     return render(request, 'server/submit.html', context)
 
 def _process_submit(request):
-    form = SubmitForm(request.POST)
-    if form.is_valid():
-        steps = form.cleaned_data['steps']
+    steps = request.POST.get('steps', None)
     batch = request.POST.get('batch', None)
     target = request.POST.get('target', None)
 
@@ -170,7 +168,7 @@ def _process_submit(request):
     result_link = get_result_link(result_stdout)
     options = get_options_summary(batch, target)
 
-    page_title = 'Fix me'
+    page_title = 'Result'
     page_heading = 'Run submitted test ' + os.path.basename(path)
     error = ''
 

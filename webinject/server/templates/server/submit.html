@@ -27,9 +27,9 @@
 
     <div class="row">
         <div class="column">
-    <h4>Headless (http) example</h4>
+            <h4>Headless (http) example</h4>
 
-    <textarea readonly class="steps" cols="68" rows="14">
+            <textarea readonly class="steps" cols="68" rows="15">
 <testcases repeat="1">
 
 <case
@@ -43,13 +43,13 @@
 />
 
 </testcases>
-    </textarea>
-    </div>
+            </textarea>
+        </div>
 
-    <div class="column">
-    <h4>Selenium example</h4>
+        <div class="column">
+            <h4>Selenium example</h4>
 
-    <textarea readonly class="steps" cols="68" rows="15">
+            <textarea readonly class="steps" cols="68" rows="15">
 <testcases repeat="1">
 
 <case
@@ -57,15 +57,15 @@
     id="10"
     description1="Get Totaljobs Home Page"
     method="selenium"
-    command='$selresp = $driver->get("http://www.totaljobs.com");'
-    command1='$selresp = $driver->get_all_cookies();'
-    verifytext="get_page_source,get_current_url"
+    command1='$driver->get("http://www.totaljobs.com");'
+    command2='$driver->get_all_cookies();'
+    verifytext="get_current_url,get_body_text,get_page_source"
     verifypositive="Location"
 />
 
 </testcases>
-    </textarea>
-    </div></div>
-
+            </textarea>
+        </div>
+    </div>
 
 {% endblock %}

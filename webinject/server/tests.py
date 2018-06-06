@@ -154,12 +154,13 @@ class WebInjectServerTests(TestCase):
         
         response = self.submit(steps, debug=False)
         self.assertContains(response, 'class="pass">WEBINJECT TEST PASSED<')
+        self.assertContains(response, '>Result<')
 
     def test_can_get_an_empty_submit_form(self):
         response = self.get_submit(debug=True)
         self.assertContains(response, 'Paste the test steps here')
         self.assertContains(response, 'Submit test for immediate run')
-        self.assertContains(response, '>submit<') # page title
+        self.assertContains(response, '>Submit<') # page title
         self._assertNotRegex(response, '>Steps:<')
         self.assertContains(response, 'cols="140" rows="40"')
         self.assertContains(response, 'class="steps"')
@@ -171,15 +172,10 @@ class WebInjectServerTests(TestCase):
 # \Apache24\bin\httpd -k restart
 
 # MVP Tests
-# Is dedupe of code possible between submit and run?
-# What if form doesn't pass validation? How is this possible?
-# Can specify batch name for submit
-# Can specify target for submit
-# Tidy up Selenium example syntax
-# Tidy up html tags and formatting for two column layout in submit.html
-# Can post the form from NUNIT
-# Page title of submitted test - Fix me
-# add a canary page
+    # Can specify batch name for submit
+    # Can specify target for submit
+    # Can post the form from NUNIT
+    # add a canary page
 
 # Ref  - form for posting a test https://docs.djangoproject.com/en/2.0/topics/forms/
 
