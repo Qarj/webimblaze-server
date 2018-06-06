@@ -58,7 +58,7 @@ class ServerIndexViewTests(TestCase):
         self.assertContains(response, 'style.css')
         self.assertContains(response, 'Run an existing test example')
         self.assertContains(response, 'href="run/?path=examples%2Ftest.xml"')
-        self.assertContains(response, 'Submit test steps for immediate run')
+        self.assertContains(response, 'Submit test steps for immediate run with batch name and target options')
 
 class WebInjectServerTests(TestCase):
     
@@ -184,9 +184,6 @@ class WebInjectServerTests(TestCase):
 # \Apache24\bin\httpd -k restart
 
 # MVP Tests
-    # Can specify batch name for submit
-    # Can specify target for submit
-    # Index - example with batch and target name
     # Is is possible to make a generic builder?
     # Can post the form from NUNIT
     # add a canary page

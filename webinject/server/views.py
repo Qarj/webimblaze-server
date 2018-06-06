@@ -29,9 +29,9 @@ def run(request):
     batch = request.GET.get('batch', None)
     target = request.GET.get('target', None)
 
-    print ('Started existing test execution:', path)
+    #print ('Started existing test execution:', path)
     result_stdout = run_wif_for_test_file_at_path(path, batch, target)
-    print ('Finished existing test execution:', path)
+    #print ('Finished existing test execution:', path)
 
     http_status, result_status, result_status_message = get_status(result_stdout)
     result_link = get_result_link(result_stdout)
@@ -67,34 +67,11 @@ def get_result_link(result_stdout):
 def get_options_summary(batch, target):
 
     # this is to prevent a leading space if we have a Target but no Batch
-    options_summary = summaryBuilder()
+    options_summary = formattedStringBuilder(next_prefix=' ', glue=' [', suffix=']')
     options_summary.append_non_blank_value(batch, 'Batch')
     options_summary.append_non_blank_value(target, 'Target')
 
     return options_summary.summary
-
-class summaryBuilder:
-
-    already_appended_item = False
-    summary = ''
-    
-    def __init__(self):
-        self.already_appended_item = False
-        self.summary = ''
-
-    def append_non_blank_value(self, value, desc):
-        if (not value):
-            return
-        if (self.already_appended_item):
-            self.summary += ' ' + self.formatted(value, desc)
-            return 
-        else:
-            self.already_appended_item = True
-            self.summary += self.formatted(value, desc)
-            return
-
-    def formatted(self, value, desc):
-        return desc + ' [' + value + ']'
 
 def get_status(result_stdout):
     if ( re.search(r'(Test Cases Failed: 0)', result_stdout) ):
@@ -160,34 +137,44 @@ def submit(request):
 def get_query_string(batch, target):
 
     # this is to prevent a leading space if we have a Target but no Batch
-    options_summary = queryStringBuilder()
-    options_summary.append_non_blank_value(batch, 'batch')
-    options_summary.append_non_blank_value(target, 'target')
+    query_string = formattedStringBuilder(initial_prefix='?', next_prefix='&', glue='=')
+    query_string.append_non_blank_value(batch, 'batch')
+    query_string.append_non_blank_value(target, 'target')
 
-    return options_summary.summary
+    return query_string.summary
 
-class queryStringBuilder:
+class formattedStringBuilder:
 
     already_appended_item = False
     summary = ''
+
+    initial_prefix=''
+    next_prefix=''
+    glue=''
+    suffix=''
     
-    def __init__(self):
+    def __init__(self, initial_prefix='', next_prefix='', glue='', suffix=''):
         self.already_appended_item = False
         self.summary = ''
+        
+        self.initial_prefix=initial_prefix
+        self.next_prefix=next_prefix
+        self.glue=glue
+        self.suffix=suffix
 
     def append_non_blank_value(self, value, desc):
         if (not value):
             return
         if (self.already_appended_item):
-            self.summary += '&' + self.formatted(value, desc)
+            self.summary += self.next_prefix + self.formatted(value, desc)
             return 
         else:
             self.already_appended_item = True
-            self.summary += '?' + self.formatted(value, desc)
+            self.summary += self.initial_prefix + self.formatted(value, desc)
             return
 
     def formatted(self, value, desc):
-        return desc + '=' + value
+        return desc + self.glue + value + self.suffix
 
 
 def _process_submit(request):
@@ -197,9 +184,9 @@ def _process_submit(request):
 
     path = _write_steps_to_random_filename_in_temp_folder(steps)
 
-    print ('Started submitted test execution:', path)
+    #print ('Started submitted test execution:', path)
     result_stdout = run_wif_for_test_file_at_path(path, batch, target)
-    print ('Finished submitted test execution:', path)
+    #print ('Finished submitted test execution:', path)
 
     _remove_random_test_step_file_ignoring_os_errors(path)
 
