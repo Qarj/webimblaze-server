@@ -5,7 +5,8 @@ from django.http import HttpResponseRedirect, HttpResponse
 from django.shortcuts import render
 from django.urls import reverse
 from itertools import chain
-import subprocess, re, os.path
+import subprocess, re, os.path, pathlib, random, string
+from pathlib import Path
 
 from .forms import SubmitForm
 from django.views.decorators.csrf import csrf_exempt
@@ -157,9 +158,7 @@ def _process_submit(request):
     batch = request.POST.get('batch', None)
     target = request.POST.get('target', None)
 
-    path = 'c:/git/webinject-server/temp/workfile.xml'
-    with open(path, 'w') as f:
-        f.write(steps)
+    path = _write_steps_to_random_filename_in_temp_folder(steps)
 
     print ('Started submitted test execution:', path)
     result_stdout = run_wif_for_test_file_at_path(path, batch, target)
@@ -170,7 +169,7 @@ def _process_submit(request):
     options = get_options_summary(batch, target)
 
     page_title = 'Fix me'
-    page_heading = 'Run submitted test ' + path
+    page_heading = 'Run submitted test ' + os.path.basename(path)
     error = ''
 
     context = {
@@ -183,6 +182,21 @@ def _process_submit(request):
         'options': options,
         'error': error,
     }
-    
+
     return render(request, 'server/run.html', context, status=http_status)
 
+def _write_steps_to_random_filename_in_temp_folder(steps):
+
+    temp_folder_path = _get_temp_folder_location_and_ensure_exists()
+    temp_file_name = ''.join(random.choices(string.ascii_uppercase + string.digits, k=5)) + '.xml'
+    temp_file_path = temp_folder_path + '/' + temp_file_name
+
+    with open(temp_file_path, 'w') as f:
+        f.write(steps)
+    return temp_file_path
+
+def _get_temp_folder_location_and_ensure_exists():
+    script_path = os.path.dirname(os.path.realpath(__file__))
+    temp_folder_path = script_path + '/../../temp/webinject-server'
+    pathlib.Path(temp_folder_path).mkdir(parents=True, exist_ok=True)
+    return temp_folder_path
