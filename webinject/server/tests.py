@@ -202,7 +202,6 @@ class WebInjectServerTests(TestCase):
 # MVP Tests
     # Can post the form from NUNIT
 
-    # checks wif.pl is runnable
     # put each canary check in its own method
     # checks DEV environment config exists
     # checks DEV environment default target exists

@@ -235,31 +235,16 @@ def _remove_random_test_step_file_ignoring_os_errors(file_path):
 
 def canary(request):
 
-    http_status = 200
+    tracker = canaryStatus()
+    tracker.append( *_canary_wif_location() ) 
+    tracker.append( *_canary_wif_can_be_executed() ) 
+
     result_status = 'pass'
+    http_status = 200
     result_status_message = 'All canary checks passed'
-
-    canary_checks = formattedStringBuilder(initial_prefix='<p class="', next_prefix='<p class="', glue='">', suffix='</p>')
-
-    if 'not found' in wif_location():
-         canary_checks.append_non_blank_value(wif_location(), 'fail')
-         http_status = 500
-    else:
-         canary_checks.append_non_blank_value('OK --&gt; WebInject Framework found at ' + wif_location(), 'pass')
-#   <p class="pass">WebInject Framework found at ...</p>
-
-    wif_cmd = ['perl', wif_location(), '--help']
-    proc = subprocess.Popen(wif_cmd, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, stdin=subprocess.PIPE)
-    output, errors = proc.communicate()
-    decoded = output.decode('cp850') # western european Windows code page is cp850
-    if 'Usage: wif.pl' in decoded:
-        canary_checks.append_non_blank_value('OK --&gt; wif.pl can be executed - shows help info', 'pass')
-    else:
-        http_status = 500
-        canary_checks.append_non_blank_value('could not execute wif.pl to view help', 'fail')
-
-    if (http_status != 200):
+    if (not tracker.canary_checks_passed):
         result_status = 'fail'
+        http_status = 500
         result_status_message = 'Canary checks failed'
 
     page_title = 'Canary'
@@ -270,7 +255,53 @@ def canary(request):
         'page_heading': page_heading,
         'result_status': result_status,
         'result_status_message': result_status_message,
-        'all_canary_check_results': canary_checks.summary,
+        'all_canary_check_results': tracker.summary(),
     }
 
     return render(request, 'server/canary.html', context, status=http_status)
+
+class canaryStatus:
+
+    canary_checks_passed = True
+    canary_checks_count = 0
+    canary_summary = None
+
+    def __init__(self):
+        self.canary_checks_passed = True
+        self.canary_checks_count = 0
+        self.canary_summary = formattedStringBuilder(initial_prefix='<p class="', next_prefix='<p class="', glue='">', suffix='</p>')
+
+    def append(self, message, check_passed):
+
+        self.canary_checks_count += 1
+
+        if (check_passed):
+            status = 'pass'
+        else:
+            status = 'fail'
+            self.canary_checks_passed = False
+
+        self.canary_summary.append_non_blank_value(message, status)
+        # Example append string:  <p class="pass">WebInject Framework found at ...</p>
+    
+    def summary(self):
+        return self.canary_summary.summary
+
+def _canary_wif_location():
+
+    if 'not found' in wif_location():
+         return wif_location(), False
+    else:
+         return 'OK --&gt; WebInject Framework found at ' + wif_location(), True
+
+def _canary_wif_can_be_executed():
+
+    wif_cmd = ['perl', wif_location(), '--help']
+    proc = subprocess.Popen(wif_cmd, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, stdin=subprocess.PIPE)
+    output, errors = proc.communicate()
+    decoded = output.decode('cp850') # western european Windows code page is cp850
+
+    if 'Usage: wif.pl' in decoded:
+        return 'OK --&gt; wif.pl can be executed - shows help info', True
+    else:
+        return 'could not execute wif.pl to view help', False
