@@ -195,6 +195,7 @@ class WebInjectServerTests(TestCase):
         self.assertContains(response, 'class="boldpass"')
         self.assertContains(response, 'WebInject Framework found at')
         self.assertContains(response, 'wif.pl can be executed - shows help info')
+        self.assertContains(response, 'DEV environment config found')
 
 
 # \Apache24\bin\httpd -k restart
@@ -202,10 +203,8 @@ class WebInjectServerTests(TestCase):
 # MVP Tests
     # Can post the form from NUNIT
 
-    # put each canary check in its own method
-    # checks DEV environment config exists
     # checks DEV environment default target exists
-    # Canary checks failed
+    # wif.config exists
     # stop canary checks if fundamental ones fail - e.g. can find wif location
 
 # Ref  - form for posting a test https://docs.djangoproject.com/en/2.0/topics/forms/

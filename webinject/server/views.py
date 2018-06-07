@@ -93,7 +93,7 @@ def get_wif_command(path, batch, target):
         batch = 'WebInject-Server'
 
     if (not target):
-        target = 'team1'
+        target = 'default'
 
     return ['perl', wif_location(), path, '--env', 'DEV', '--target', target, '--batch', batch , '--no-update-config']
 
@@ -237,7 +237,11 @@ def canary(request):
 
     tracker = canaryStatus()
     tracker.append( *_canary_wif_location() ) 
-    tracker.append( *_canary_wif_can_be_executed() ) 
+
+    if (tracker.canary_checks_passed):
+        tracker.append( *_canary_wif_can_be_executed() )
+        tracker.append( *_canary_dev_environment_config() )
+        tracker.append( *_canary_default_config() )
 
     result_status = 'pass'
     http_status = 200
@@ -305,3 +309,27 @@ def _canary_wif_can_be_executed():
         return 'OK --&gt; wif.pl can be executed - shows help info', True
     else:
         return 'could not execute wif.pl to view help', False
+
+def _canary_dev_environment_config():
+
+    wif_root, wif_script = os.path.split( wif_location() )
+    root_dev_config = wif_root + '/environment_config/DEV.config'
+    team_dev_config = wif_root + '/environment_config/DEV'
+    if ( os.path.isfile(root_dev_config) and
+         os.path.isdir(team_dev_config)
+        ):
+        return 'OK --&gt; DEV environment config found [' + root_dev_config + ' and folder ' + team_dev_config + ']', True
+    else:
+        return 'Could not find both ' + root_dev_config + ' and folder ' + team_dev_config, False
+
+def _canary_default_config():
+
+    wif_root, wif_script = os.path.split( wif_location() )
+    dev_default_config = wif_root + '/environment_config/DEV/default.config'
+    if ( os.path.isfile(dev_default_config) ):
+        return 'OK --&gt; DEV default config found at ' + dev_default_config, True
+    else:
+        return 'Could not find DEV default config file ' + dev_default_config, False
+
+
+
