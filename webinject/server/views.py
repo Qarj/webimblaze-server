@@ -25,7 +25,7 @@ def index(request):
     return render(request, 'server/index.html', context)
 
 def run(request):
-    path = substitute_star_with_slash( request.GET.get('path', None) )
+    path = _normalise_path( substitute_star_with_slash( request.GET.get('path', None) ) )
     batch = request.GET.get('batch', None)
     target = request.GET.get('target', None)
 
@@ -53,6 +53,14 @@ def run(request):
     }
     
     return render(request, 'server/run.html', context, status=http_status)
+
+def _normalise_path( relative_path ):
+    script_path = os.path.dirname( os.path.realpath(__file__) )
+    path_for_test_steps_if_is_in_this_project = script_path + '/../../' + relative_path
+    if ( os.path.isfile(path_for_test_steps_if_is_in_this_project) ):
+        return path_for_test_steps_if_is_in_this_project
+    else:
+        return relative_path # let wif.pl try and find the test script
 
 def substitute_star_with_slash(path):
     return path.replace('*','/')
