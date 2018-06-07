@@ -196,6 +196,8 @@ class WebInjectServerTests(TestCase):
         self.assertContains(response, 'WebInject Framework found at')
         self.assertContains(response, 'wif.pl can be executed - shows help info')
         self.assertContains(response, 'DEV environment config found')
+        self.assertContains(response, 'wif.config found')
+        self.assertContains(response, 'WebInject Framework can run webinject.pl and store result')
 
 
 # \Apache24\bin\httpd -k restart
@@ -203,9 +205,10 @@ class WebInjectServerTests(TestCase):
 # MVP Tests
     # Can post the form from NUNIT
 
-    # checks DEV environment default target exists
-    # wif.config exists
-    # stop canary checks if fundamental ones fail - e.g. can find wif location
+    # rationalise calling wif.pl from views.py
+    # run check.xml instead of test.xml in examples and tests
+    # run fail.xml in project instead of in webinject/examples in examples and tests
+    # add a multi test for submit
 
 # Ref  - form for posting a test https://docs.djangoproject.com/en/2.0/topics/forms/
 

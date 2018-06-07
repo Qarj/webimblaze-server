@@ -1,0 +1,11 @@
+<testcases repeat="1">
+
+<case
+    id="10"
+    description1="Run a quick test"
+    method="cmd"
+    command="echo all is good"
+    verifypositive1="all is good"
+/>
+
+</testcases>

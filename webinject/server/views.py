@@ -242,6 +242,10 @@ def canary(request):
         tracker.append( *_canary_wif_can_be_executed() )
         tracker.append( *_canary_dev_environment_config() )
         tracker.append( *_canary_default_config() )
+        tracker.append( *_canary_wif_config() )
+        if (tracker.canary_checks_passed):
+            tracker.append( *_canary_webinject_can_be_executed() )
+            
 
     result_status = 'pass'
     http_status = 200
@@ -308,7 +312,7 @@ def _canary_wif_can_be_executed():
     if 'Usage: wif.pl' in decoded:
         return 'OK --&gt; wif.pl can be executed - shows help info', True
     else:
-        return 'could not execute wif.pl to view help', False
+        return 'Could not execute wif.pl to view help', False
 
 def _canary_dev_environment_config():
 
@@ -331,5 +335,25 @@ def _canary_default_config():
     else:
         return 'Could not find DEV default config file ' + dev_default_config, False
 
+def _canary_wif_config():
 
+    wif_root, wif_script = os.path.split( wif_location() )
+    wif_config = wif_root + '/wif.config'
+    if ( os.path.isfile(wif_config) ):
+        return 'OK --&gt; wif.config found at ' + wif_config, True
+    else:
+        return 'Could not find wif.config file at ' + wif_config, False
 
+def _canary_webinject_can_be_executed():
+    
+    script_path = os.path.dirname(os.path.realpath(__file__))
+    test_path = script_path + '/../../tests/check.xml'
+    wif_cmd = ['perl', wif_location(), test_path, '--env', 'DEV', '--target', 'default', '--batch', 'WebInject-Server-Canary' , '--no-update-config']
+    proc = subprocess.Popen(wif_cmd, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, stdin=subprocess.PIPE)
+    output, errors = proc.communicate()
+    decoded = output.decode('cp850') # western european Windows code page is cp850
+
+    if 'Test Cases Failed: 0' in decoded and 'Result at: http' in decoded:
+        return 'OK --&gt; WebInject Framework can run webinject.pl and store result', True
+    else:
+        return 'WebInject Framework could not run webinject.pl and store result', False
