@@ -1,6 +1,7 @@
 <testcases repeat="1">
 
 <case
+    varEMPTY=""
     id="10"
     description1="Submit a Selenium test"
     method="post"
@@ -12,7 +13,7 @@
     section="Selenium Smoke Test"
     id="10"
     description1="Get Totaljobs Home Page"
-    method="selenium"
+    method="sele{EMPTY}nium"
     command1="$driver->get(q!http://www.totaljobs.com!)"
     command2="$driver->get_all_cookies()"
     verifytext="get_current_url,get_body_text,get_page_source"
@@ -22,6 +23,8 @@
 </testcases>
     '
     verifypositive1="Get Totaljobs Home Page"
+    verifypositive2="WEBINJECT TEST PASSED"
+    verifynegative1="WEBINJECT TEST FAILED"
 />
 
 </testcases>

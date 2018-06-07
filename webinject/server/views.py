@@ -196,7 +196,7 @@ def _process_submit(request):
     result_stdout = run_wif_for_test_file_at_path(path, batch, target)
     #print ('Finished submitted test execution:', path)
 
-    #_remove_random_test_step_file_ignoring_os_errors(path)
+    _remove_random_test_step_file_ignoring_os_errors(path)
 
     http_status, result_status, result_status_message = get_status(result_stdout)
     result_link = get_result_link(result_stdout)
