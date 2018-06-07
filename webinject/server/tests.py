@@ -205,7 +205,6 @@ class WebInjectServerTests(TestCase):
 # MVP Tests
     # Can post the form from NUNIT
 
-    # rationalise calling wif.pl from views.py
     # run check.xml instead of test.xml in examples and tests
     # run fail.xml in project instead of in webinject/examples in examples and tests
     # add a multi test for submit

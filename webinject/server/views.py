@@ -348,12 +348,9 @@ def _canary_webinject_can_be_executed():
     
     script_path = os.path.dirname(os.path.realpath(__file__))
     test_path = script_path + '/../../tests/check.xml'
-    wif_cmd = ['perl', wif_location(), test_path, '--env', 'DEV', '--target', 'default', '--batch', 'WebInject-Server-Canary' , '--no-update-config']
-    proc = subprocess.Popen(wif_cmd, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, stdin=subprocess.PIPE)
-    output, errors = proc.communicate()
-    decoded = output.decode('cp850') # western european Windows code page is cp850
+    result = run_wif_for_test_file_at_path(test_path, 'WebInject-Server-Canary', 'default')
 
-    if 'Test Cases Failed: 0' in decoded and 'Result at: http' in decoded:
+    if 'Test Cases Failed: 0' in result and 'Result at: http' in result:
         return 'OK --&gt; WebInject Framework can run webinject.pl and store result', True
     else:
         return 'WebInject Framework could not run webinject.pl and store result', False
