@@ -1,0 +1,26 @@
+<testcases repeat="1">
+
+<case
+    id="10"
+    description1="Submit a headless test"
+    method="post"
+    url="http://127.0.0.1/webinject/server/submit/?batch=Multi&target=default"
+    postbody='steps=
+<testcases repeat="1">
+
+{LESSTHAN}case
+    varTOTALJOBS_URL="https://www.totaljobs.com"
+    id="10"
+    description1="Get Totaljobs Home Page"
+    method="get"
+    url="{TOTALJOBS_URL}"
+    verifypositive1="Search for and be recommended"
+    verifypositive2="See all hiring companies"
+/>
+
+</testcases>
+    '
+    verifypositive1="Get Totaljobs Home Page"
+/>
+
+</testcases>

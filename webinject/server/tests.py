@@ -205,10 +205,6 @@ class WebInjectServerTests(TestCase):
 # MVP Tests
     # Can post the form from NUNIT
 
-    # run check.xml instead of test.xml in examples and tests
-    # run fail.xml in project instead of in webinject/examples in examples and tests
-    # add a multi test for submit
-
 # Ref  - form for posting a test https://docs.djangoproject.com/en/2.0/topics/forms/
 
 
