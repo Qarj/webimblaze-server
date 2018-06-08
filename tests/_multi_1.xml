@@ -6,6 +6,7 @@
     method="get"
     url="http://127.0.0.1/webinject/server/run/?path=examples%2Fslow.xml"
     verifypositive1="Sorry that took so long"
+    getallhrefs="\.css|\.less" getallsrcs="\.jpg|\.png|\.js|\.gif"
 />
 
 </testcases>

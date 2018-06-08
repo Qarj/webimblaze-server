@@ -6,6 +6,8 @@
     method="get"
     url="http://127.0.0.1/webinject/server/run/?path=examples%2Ftest.xml"
     verifypositive1="Test that WebInject can run a very basic test"
+    getallhrefs="\.css|\.less"
+    getallsrcs="\.jpg|\.png|\.js|\.gif"
 />
 
 </testcases>
