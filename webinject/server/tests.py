@@ -199,11 +199,19 @@ class WebInjectServerTests(TestCase):
         self.assertContains(response, 'wif.config found')
         self.assertContains(response, 'WebInject Framework can run webinject.pl and store result')
 
+    #
+    # Lean test specification format
+    #
+
 
 # \Apache24\bin\httpd -k restart
 
 # MVP Tests
     # Can post the form from NUNIT
+
+    # do not need opening <testcases repeat="1"> tag
+    # do not need closing tag
+
 
 # Ref  - form for posting a test https://docs.djangoproject.com/en/2.0/topics/forms/
 
