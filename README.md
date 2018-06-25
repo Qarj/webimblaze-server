@@ -183,8 +183,15 @@ sudo git clone https://github.com/Qarj/WebInject-Framework
 sudo git clone https://github.com/Qarj/WebInject
 ```
 
+Create the WebInject-Framework `wif.config` file:
+```
+cd WebInject-Framework
+perl wif.pl --create-config
+```
+
 Set permissions so the Apache user can access the projects:
 ```
+cd /var/www/wis
 sudo chmod -R 777 .
 ```
 

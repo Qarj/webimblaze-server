@@ -378,4 +378,4 @@ def _canary_webinject_can_be_executed():
     if 'Test Cases Failed: 0' in result and 'Result at: http' in result:
         return 'OK --&gt; WebInject Framework can run webinject.pl and store result', True
     else:
-        return 'WebInject Framework could not run webinject.pl and store result', False
+        return 'WebInject Framework could not run webinject.pl and store result<br /><br /><pre><code>' + result + '</code></pre>', False
