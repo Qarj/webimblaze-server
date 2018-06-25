@@ -189,11 +189,12 @@ cd WebInject-Framework
 perl wif.pl --create-config
 ```
 
-Set permissions so the Apache user can access the projects:
+Set permissions so the Apache user can access the file system:
 ```
-cd /var/www/wis
+cd /var/www
 sudo chmod -R 777 .
 ```
+**_Don't do this on a public facing web server!_**
 
 ### Setup mod_wsgi
 
