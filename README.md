@@ -179,6 +179,9 @@ sudo mkdir wis
 sudo chmod 777 wis
 cd wis
 sudo git clone https://github.com/Qarj/webinject-server
+sudo git clone https://github.com/Qarj/WebInject-Framework
+sudo git clone https://github.com/Qarj/WebInject
+sudo chmod -R 777 .
 ```
 
 Set permissions so the Apache user can access the project:
@@ -199,6 +202,14 @@ sudo rm /etc/apache2/sites-enabled/000-default.conf
 sudo systemctl restart apache2
 ```
 Verify with url: http://localhost/webinject/server/canary/
+
+### Debugging
+
+```
+sudo cat /etc/apache2/envvars
+sudo cat /var/log/apache2/error.log
+```
+
 
 Optional - deactivate the virtual environment from your shell:
 ```

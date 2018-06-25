@@ -115,11 +115,11 @@ def wif_location():
 def wif_location_linux():
 
     locations = []
-    locations.append(r'~/git/WebInject-Framework')
+    locations.append(r'/var/www/wis/WebInject-Framework')
     for l in locations:
         if ( os.path.isfile(l+r'/wif.pl') ):
             return l+r'/wif.pl'
-    return ('WebInject Framework wif.pl file not found - suggest deploying to ~/git/WebInject-Framework \n\n')
+    return ('WebInject Framework wif.pl file not found - suggest deploying to /var/www/wis/WebInject-Framework \n\n')
 
 def wif_location_windows():
 
