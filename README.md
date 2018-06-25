@@ -188,6 +188,11 @@ Create the WebInject-Framework `wif.config` file:
 cd WebInject-Framework
 perl wif.pl --create-config
 ```
+Edit the config file, and change the `web_server_address` from `localhost` to the DNS name of the server.
+```
+gedit wif.config
+```
+If you don't do this, you won't be able to access the results from outside this server.
 
 Set permissions so the Apache user can access the file system:
 ```
