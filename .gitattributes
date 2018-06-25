@@ -25,5 +25,3 @@ LICENSE     text
 *.exe       binary
 *.ico       binary
 *.dll       binary
-
-*           text=auto
