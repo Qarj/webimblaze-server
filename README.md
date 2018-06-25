@@ -181,14 +181,11 @@ cd wis
 sudo git clone https://github.com/Qarj/webinject-server
 sudo git clone https://github.com/Qarj/WebInject-Framework
 sudo git clone https://github.com/Qarj/WebInject
-sudo chmod -R 777 .
 ```
 
-Set permissions so the Apache user can access the project:
+Set permissions so the Apache user can access the projects:
 ```
-cd webinject-server
-sudo chmod 777 webinject
-sudo chmod 777 webinject/server/migrations
+sudo chmod -R 777 .
 ```
 
 ### Setup mod_wsgi
