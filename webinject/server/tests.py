@@ -31,7 +31,7 @@ simple_steps = """
     id="10"
     description1="Check that WebInject Server can run a simple submitted test"
     method="cmd"
-    command="REM This and that"
+    command="echo This and that"
     verifypositive1="This and that"
 />
 
@@ -39,7 +39,7 @@ simple_steps = """
     id="20"
     description1="Subsequent step - retry {RETRY}"
     method="cmd"
-    command="REM Not much more - retry {RETRY}"
+    command="echo Not much more - retry {RETRY}"
     verifypositive="retry 0"
     verifynegative="Nothing much"
 />
