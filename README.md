@@ -196,6 +196,23 @@ sudo chmod -R 777 .
 ```
 **_Don't do this on a public facing web server!_**
 
+Alternatively, within each clone:
+```
+git -c core.fileMode=false diff
+```
+
+Though this might work globally:
+```
+git config --global core.fileMode false
+```
+
+Then:
+```
+cd /var/www
+sudo find . -type d -exec chmod a+rwx {} \;
+sudo find . -type f -exec chmod a+rw {} \;
+```
+
 ### Setup mod_wsgi
 
 **_Skip this section if you have installed the test-results-dashboard project._**
