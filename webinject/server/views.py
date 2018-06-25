@@ -106,6 +106,23 @@ def get_wif_command(path, batch, target):
     return ['perl', wif_location(), path, '--env', 'DEV', '--target', target, '--batch', batch , '--no-update-config']
 
 def wif_location():
+
+    if os.name == 'nt':
+        return wif_location_windows()
+
+    return wif_location_linux()
+
+def wif_location_linux():
+
+    locations = []
+    locations.append(r'~/git/WebInject-Framework')
+    for l in locations:
+        if ( os.path.isfile(l+r'/wif.pl') ):
+            return l+r'/wif.pl'
+    return ('WebInject Framework wif.pl file not found - suggest deploying to ~/git/WebInject-Framework \n\n')
+
+def wif_location_windows():
+
     locations = []
     locations.append(r'D:\WebInjectSERVER')
     locations.append(r'C:\WebInjectSERVER')

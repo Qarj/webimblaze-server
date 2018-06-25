@@ -118,6 +118,97 @@ To merge the WSGIPythonPath you put a semicolon between the paths (or a colon fo
 WSGIPythonPath c:/git/test-results-dashboard/dash;c:/git/webinject-server/webinject
 ```
 
+## Deploy onLinux
+
+Deploy these projects to the recommended location:
+* https://github.com/Qarj/WebInject
+* https://github.com/Qarj/WebInject-Framework
+
+
+Check Python version - minimum version required is 3.6.
+```
+python --version
+```
+### Apache, Django and mod_wsgi installation
+
+**_Skip this section if you have installed the test-results-dashboard project._**
+
+Install required system packages as root:
+```
+sudo apt update
+sudo apt-get install python3-pip
+sudo apt-get install python3-venv
+sudo apt install gnome-terminal
+sudo apt install apache2
+sudo apt install apache2-dev
+```
+
+Now create a Python 3 virtual environment and activate it:
+```
+cd /usr/local
+sudo mkdir venvs
+sudo chmod 777 venvs
+cd venvs
+python3 -m venv dash
+cd dash
+source bin/activate
+```
+
+Now that the virtual environment is active, any `python` and `pip` commands will
+refer to Python 3, and not Python 2. Prove this:
+```
+python --version
+```
+
+Install the necessary packages for test-results-dashboard as a normal user, not as root:
+```
+pip install Django
+pip install mod_wsgi
+```
+If you are plagued by SSL errors, then you need to build Python 3 manually to sort it out.
+Check here for how to do this: https://github.com/Qarj/linux-survival/blob/master/BuildPython3.md
+When you've got Python 3 working with shared libraries, `cd /usr/local/venvs` then `rm -r dash` go
+back to the `python3 -m venv dash` step and continue from there.
+
+### Clone Project
+
+Create a folder for webinject-server and clone this project:
+```
+cd /var/www
+sudo mkdir wis
+sudo chmod 777 wis
+cd wis
+sudo git clone https://github.com/Qarj/webinject-server
+```
+
+Set permissions so the Apache user can access the project:
+```
+cd webinject-server
+sudo chmod 777 webinject
+sudo chmod 777 webinject/server/migrations
+```
+
+### Setup mod_wsgi
+
+**_Skip this section if you have installed the test-results-dashboard project._**
+
+```
+mod_wsgi-express module-config | sudo tee /etc/apache2/conf-enabled/wsgi.conf
+sudo cp tools/all-qarj-projects-linux.conf /etc/apache2/sites-enabled/all-qarj-projects.conf
+sudo rm /etc/apache2/sites-enabled/000-default.conf
+sudo systemctl restart apache2
+```
+Verify with url: http://localhost/webinject/server/canary/
+
+Optional - deactivate the virtual environment from your shell:
+```
+deactivate
+```
+
+## WebInject Server home page
+
+http://localhost/webinject/server/
+
 ## Run the Unit Tests
 
 From folder `C:\git\webinject-server\webinject`:
