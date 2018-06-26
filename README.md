@@ -118,12 +118,14 @@ To merge the WSGIPythonPath you put a semicolon between the paths (or a colon fo
 WSGIPythonPath c:/git/test-results-dashboard/dash;c:/git/webinject-server/webinject
 ```
 
-## Deploy onLinux
+## Deploy on Linux
 
 Deploy these projects to the recommended location:
 * https://github.com/Qarj/WebInject
 * https://github.com/Qarj/WebInject-Framework
 
+Optionally deploy if you want to use Selenium too:
+* https://github.com/Qarj/WebInject-Selenium
 
 Check Python version - minimum version required is 3.6.
 ```
@@ -179,8 +181,6 @@ sudo mkdir wis
 sudo chmod 777 wis
 cd wis
 sudo git clone https://github.com/Qarj/webinject-server
-sudo git clone https://github.com/Qarj/WebInject-Framework
-sudo git clone https://github.com/Qarj/WebInject
 ```
 
 Create the WebInject-Framework `wif.config` file:
@@ -195,23 +195,6 @@ gedit wif.config
 If you don't do this, you won't be able to access the results from outside this server.
 
 Set permissions so the Apache user can access the file system:
-```
-cd /var/www
-sudo chmod -R 777 .
-```
-**_Don't do this on a public facing web server!_**
-
-Alternatively, within each clone:
-```
-git -c core.fileMode=false diff
-```
-
-Though this might work globally:
-```
-git config --global core.fileMode false
-```
-
-Then:
 ```
 cd /var/www
 sudo find . -type d -exec chmod a+rwx {} \;

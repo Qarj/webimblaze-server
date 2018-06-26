@@ -115,7 +115,7 @@ def wif_location():
 def wif_location_linux():
 
     locations = []
-    locations.append(r'/var/www/wis/WebInject-Framework')
+    locations.append(r'/usr/local/bin/WebInject-Framework')
     for l in locations:
         if ( os.path.isfile(l+r'/wif.pl') ):
             return l+r'/wif.pl'
