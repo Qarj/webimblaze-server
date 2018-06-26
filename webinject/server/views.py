@@ -103,7 +103,7 @@ def get_wif_command(path, batch, target):
     if (not target):
         target = 'default'
 
-    return ['perl', wif_location(), path, '--env', 'DEV', '--target', target, '--batch', batch , '--no-update-config']
+    return ['perl', wif_location(), path, '--env', 'DEV', '--target', target, '--batch', batch , '--no-update-config', '--headless']
 
 def wif_location():
 
