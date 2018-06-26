@@ -6,8 +6,6 @@ Run an existing script via a GET. Example: http://localhost/webinject/server/run
 
 Or submit a test script to run using POST.
 
-This project is not yet ready for use, check back later!
-
 The main WebInject project is here: http://qarj.github.io/WebInject
 
 ## Deploy on Windows
@@ -77,7 +75,7 @@ WSGIPythonHome "c:/python36"
 
 Activate `httpd-vhosts.conf`
 ```
-notepad C:\Apache24\conf\httpd.conf`
+notepad C:\Apache24\conf\httpd.conf
 ```
 then uncomment `Include conf/extra/httpd-vhosts.conf`
 
@@ -183,22 +181,12 @@ cd wis
 sudo git clone https://github.com/Qarj/webinject-server
 ```
 
-Create the WebInject-Framework `wif.config` file:
-```
-cd WebInject-Framework
-perl wif.pl --create-config
-```
-Edit the config file, and change the `web_server_address` from `localhost` to the DNS name of the server.
-```
-gedit wif.config
-```
-If you don't do this, you won't be able to access the results from outside this server.
-
 Set permissions so the Apache user can access the file system:
 ```
 cd /var/www
 sudo find . -type d -exec chmod a+rwx {} \;
 sudo find . -type f -exec chmod a+rw {} \;
+sudo find . -type f -iname "*.py" -exec chmod +x {} \;
 ```
 
 ### Setup mod_wsgi
