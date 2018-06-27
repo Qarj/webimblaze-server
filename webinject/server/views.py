@@ -239,7 +239,7 @@ def _process_submit(request):
 def _write_steps_to_random_filename_in_temp_folder(steps):
 
     temp_folder_path = _get_temp_folder_location_and_ensure_exists()
-    temp_file_name = ''.join(random.choices(string.ascii_uppercase + string.digits, k=5)) + '.xml'
+    temp_file_name = ''.join(random.sample(string.ascii_uppercase + string.digits, k=5)) + '.xml'
     temp_file_path = temp_folder_path + '/' + temp_file_name
 
     with open(temp_file_path, 'w') as f:
