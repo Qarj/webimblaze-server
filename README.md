@@ -10,7 +10,7 @@ The main WebInject project is here: http://qarj.github.io/WebInject
 
 ## Deploy on Windows
 
-Check Python version - minimum version required is 3.6.
+Check Python version - minimum version so far tested is 3.6.5.
 The 32 bit version is the default at python.org and is recommended.
 ```
 python --version
@@ -118,6 +118,8 @@ WSGIPythonPath c:/git/test-results-dashboard/dash;c:/git/webinject-server/webinj
 
 ## Deploy on Linux
 
+Requires Python 3, tested with Python 3.5.2 and 3.6.5.
+
 Deploy these projects to the recommended location:
 * https://github.com/Qarj/WebInject
 * https://github.com/Qarj/WebInject-Framework
@@ -125,7 +127,7 @@ Deploy these projects to the recommended location:
 Optionally deploy if you want to use Selenium too:
 * https://github.com/Qarj/WebInject-Selenium
 
-To get WebInject Server working there are additional dependecies on Python 3.6, Apache and mod_wsgi. 
+To get WebInject Server working there are additional dependecies on Python 3, Apache and mod_wsgi. 
 The setup is explained in the project test-results-dashboard. Rather than repeat the instructions
 here, it is no harder to actually deploy the other project. So do that now and the dependencies will
 be satisfied.
