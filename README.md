@@ -125,54 +125,17 @@ Deploy these projects to the recommended location:
 Optionally deploy if you want to use Selenium too:
 * https://github.com/Qarj/WebInject-Selenium
 
-Check Python version - minimum version required is 3.6.
-```
-python --version
-```
-### Apache, Django and mod_wsgi installation
+To get WebInject Server working there are additional dependecies on Python 3.6, Apache and mod_wsgi. 
+The setup is explained in the project test-results-dashboard. Rather than repeat the instructions
+here, it is no harder to actually deploy the other project. So do that now and the dependencies will
+be satisfied.
 
-**_Skip this section if you have installed the test-results-dashboard project._**
+Deploy:
+* https://github.com/Qarj/test-results-dashboard
 
-Install required system packages as root:
-```
-sudo apt update
-sudo apt-get install python3-pip
-sudo apt-get install python3-venv
-sudo apt install gnome-terminal
-sudo apt install apache2
-sudo apt install apache2-dev
-```
+### Clone webinject-server
 
-Now create a Python 3 virtual environment and activate it:
-```
-cd /usr/local
-sudo mkdir venvs
-sudo chmod 777 venvs
-cd venvs
-python3 -m venv dash
-cd dash
-source bin/activate
-```
-
-Now that the virtual environment is active, any `python` and `pip` commands will
-refer to Python 3, and not Python 2. Prove this:
-```
-python --version
-```
-
-Install the necessary packages for test-results-dashboard as a normal user, not as root:
-```
-pip install Django
-pip install mod_wsgi
-```
-If you are plagued by SSL errors, then you need to build Python 3 manually to sort it out.
-Check here for how to do this: https://github.com/Qarj/linux-survival/blob/master/BuildPython3.md
-When you've got Python 3 working with shared libraries, `cd /usr/local/venvs` then `rm -r dash` go
-back to the `python3 -m venv dash` step and continue from there.
-
-### Clone Project
-
-Create a folder for webinject-server and clone this project:
+Create a folder for webinject-server and clone the project:
 ```
 cd /var/www
 sudo mkdir wis
@@ -189,16 +152,11 @@ sudo find . -type f -exec chmod a+rw {} \;
 sudo find . -type f -iname "*.py" -exec chmod +x {} \;
 ```
 
-### Setup mod_wsgi
-
-**_Skip this section if you have installed the test-results-dashboard project._**
-
+Restart Apache:
 ```
-mod_wsgi-express module-config | sudo tee /etc/apache2/conf-enabled/wsgi.conf
-sudo cp tools/all-qarj-projects-linux.conf /etc/apache2/sites-enabled/all-qarj-projects.conf
-sudo rm /etc/apache2/sites-enabled/000-default.conf
 sudo systemctl restart apache2
 ```
+
 Verify with url: http://localhost/webinject/server/canary/
 
 ### Debugging
@@ -207,7 +165,6 @@ Verify with url: http://localhost/webinject/server/canary/
 sudo cat /etc/apache2/envvars
 sudo cat /var/log/apache2/error.log
 ```
-
 
 Optional - deactivate the virtual environment from your shell:
 ```
@@ -220,14 +177,14 @@ http://localhost/webinject/server/
 
 ## Run the Unit Tests
 
-From folder `C:\git\webinject-server\webinject`:
+From folder `webinject-server/webinject`:
 ```
 python manage.py test server
 ```
 
 ## Run the development server
 
-From folder `C:\git\webinject-server\webinject`:
+From folder `webinject-server/webinject`:
 ```
 python manage.py runserver
 ```
