@@ -38,6 +38,10 @@ verifypositive1:    Register
 verifypositive2:    All fields are mandatory
 getallhrefs:        \.css|\.less
 getallsrcs:         \.jpg|\.png|\.js|\.gif
+
+step:               Get Search results page
+url:                {TOTALJOBS_URL}/jobs/automated
+verifypositive1:    results
             </textarea>
         </div>
 
@@ -51,6 +55,11 @@ selenium1: $driver->get("http://www.totaljobs.com")
 selenium2: $driver->get_all_cookies()
 verifytext: get_current_url,get_body_text,get_page_source
 verifypositive: Location
+
+step: Get Search results page
+selenium: $driver->get("http://www.totaljobs.com/jobs/selenium")
+verifytext: get_current_url,get_body_text,get_page_source
+verifypositive: results
             </textarea>
         </div>
     </div>
