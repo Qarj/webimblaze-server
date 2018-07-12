@@ -206,8 +206,9 @@ def _process_submit(request):
     steps = request.POST.get('steps', None)
     batch = request.GET.get('batch', None)
     target = request.GET.get('target', None)
+    name = request.GET.get('name', None)
 
-    path = _write_steps_to_random_filename_in_temp_folder(steps)
+    path = _write_steps_to_file_in_temp_folder(steps, name)
 
     #print ('Started submitted test execution:', path)
     result_stdout = run_wif_for_test_file_at_path(path, batch, target)
@@ -236,10 +237,13 @@ def _process_submit(request):
 
     return render(request, 'server/run.html', context, status=http_status)
 
-def _write_steps_to_random_filename_in_temp_folder(steps):
+def _write_steps_to_file_in_temp_folder(steps, name):
+
+    temp_file_name = ''.join(random.sample(string.ascii_uppercase + string.digits, k=5)) + '.test'
+    if name != None:
+        temp_file_name = name + '.test'
 
     temp_folder_path = _get_temp_folder_location_and_ensure_exists()
-    temp_file_name = ''.join(random.sample(string.ascii_uppercase + string.digits, k=5)) + '.xml'
     temp_file_path = temp_folder_path + '/' + temp_file_name
 
     with open(temp_file_path, 'w') as f:

@@ -75,23 +75,25 @@ class WebInjectServerTests(TestCase):
         url = my_reverse('server:run', query_kwargs=kwargs)
         return self._get_url(url, debug)
 
-    def get_submit(self, debug=False, batch='', target=''):
-        return self._get_url( self._build_submit_url(batch, target), debug )
+    def get_submit(self, debug=False, batch='', target='', name=''):
+        return self._get_url( self._build_submit_url(batch, target, name), debug )
 
     def canary(self, debug=False):
         url = my_reverse('server:canary')
         return self._get_url( url, debug )
 
-    def submit(self, steps, debug=False, batch='', target=''):
+    def submit(self, steps, debug=False, batch='', target='', name=''):
         body = {'steps': steps}
-        return self._post_url_and_body( self._build_submit_url(batch, target), body, debug )
+        return self._post_url_and_body( self._build_submit_url(batch, target, name), body, debug )
 
-    def _build_submit_url(self, batch, target):
+    def _build_submit_url(self, batch, target, name):
         kwargs={}
         if (batch):
             kwargs['batch'] = batch
         if (target):
             kwargs['target'] = target
+        if (name):
+            kwargs['name'] = name
         return my_reverse('server:submit', query_kwargs=kwargs)
 
     def _get_url(self, url, debug=False):
@@ -163,11 +165,12 @@ class WebInjectServerTests(TestCase):
         self.assertContains(response, 'class="pass">WEBINJECT TEST PASSED<')
         self.assertContains(response, '>Result<')
 
-    def test_can_submit_a_test_with_batch_and_target(self):
+    def test_can_submit_a_test_with_batch_and_target_and_test_name(self):
         
-        response = self.submit(simple_steps, batch='SubmitBatch', target='team2', debug=False)
+        response = self.submit(simple_steps, batch='SubmitBatch', target='team2', name='named_test', debug=False)
         self.assertContains(response, 'class="pass">WEBINJECT TEST PASSED<')
         self.assertContains(response, '>Batch [SubmitBatch] Target [team2]<')
+        self.assertContains(response, 'named_test.test')
 
     def test_can_get_an_empty_submit_form(self):
         response = self.get_submit(debug=False)
