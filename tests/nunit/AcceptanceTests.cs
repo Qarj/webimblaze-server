@@ -21,7 +21,7 @@ namespace MyApp.AcceptanceTests
         {
             string ns = GetType().Namespace;
             runName = Util.RandomString(5);
-            webinject = new WebInject(ns + "_" +runName);
+            webinject = new WebInject(ns + "_" + runName);
         }
 
         [SetUp]
@@ -48,8 +48,7 @@ retry: 5
             ";
 
             string result = webinject.Submit(test);
-
-            Assert.IsTrue( result.Contains("WEBINJECT TEST PASSED") , "Failed" );
+            StringAssert.Contains( "WEBINJECT TEST PASSED" , result );
         }
 
         [Test]
@@ -64,8 +63,7 @@ retry: 5
             ";
 
             string result = webinject.Submit(test);
-
-            Assert.IsTrue( result.Contains("WEBINJECT TEST PASSED") , "Failed" );
+            StringAssert.Contains( "WEBINJECT TEST PASSED" , result );
         }
 
         [Test]
@@ -80,8 +78,7 @@ retry: 5
             ";
 
             string result = webinject.Submit(test);
-
-            Assert.IsTrue( result.Contains("WEBINJECT TEST PASSED") , "Failed" );
+            StringAssert.Contains( "WEBINJECT TEST PASSED" , result );
         }
 
         [Test]
@@ -97,8 +94,7 @@ shell2: dir
             ";
 
             string result = webinject.Submit(test);
-
-            Assert.IsTrue( result.Contains("WEBINJECT TEST PASSED") , "Failed" );
+            StringAssert.Contains( "WEBINJECT TEST PASSED" , result );
         }
 
         [Test]
@@ -111,8 +107,7 @@ verifypositive: goodbye
             ";
 
             string result = webinject.Submit(test);
-
-            Assert.IsTrue( result.Contains("WEBINJECT TEST FAILED") , "Failed to fail" );
+            StringAssert.Contains( "WEBINJECT TEST FAILED" , result );
         }
 
         [Test]
@@ -125,8 +120,7 @@ verifypositive: More options
             ";
 
             string result = webinject.Submit(test);
-
-            Assert.IsTrue( result.Contains("WEBINJECT TEST PASSED") , "Failed" );
+            StringAssert.Contains( "WEBINJECT TEST PASSED" , result );
         }
 
         [Test]
@@ -139,8 +133,7 @@ verifypositive: Latest run results for all apps
             ";
 
             string result = webinject.Submit(test);
-
-            Assert.IsTrue( result.Contains("WEBINJECT TEST PASSED") , "Failed" );
+            StringAssert.Contains( "WEBINJECT TEST PASSED" , result );
         }
 
         [Test]
@@ -153,8 +146,7 @@ verifypositive: Latest run results for all apps
             ";
 
             string result = webinject.Submit(test);
-
-            Assert.IsTrue( result.Contains("WEBINJECT TEST PASSED") , "Failed" );
+            StringAssert.Contains( "WEBINJECT TEST PASSED" , result );
         }
 
     }
@@ -168,8 +160,8 @@ verifypositive: Latest run results for all apps
             this.batch = batch;
         }
     
-//        static string targetServer = "[THIS_SERVER]";
-        static string targetServer = "dash";
+        static string targetServer = "[THIS_SERVER]";
+//        static string targetServer = "dash";
    
         static string server_uri = "http://dash/webinject/server/submit/";
 
