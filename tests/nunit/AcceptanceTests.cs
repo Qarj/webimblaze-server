@@ -14,18 +14,13 @@ namespace MyApp.AcceptanceTests
     {
         
         private string runName;
-        private string runServer;
-        private string appName = "MyApp";
         private WebInject webinject;
         
         [OneTimeSetUp]
         protected void OneTimeSetUp()
         {
-            runName = Dashboard.RandomString(5);
-            runServer = Dashboard.RunServer();
-
             string ns = GetType().Namespace;
-
+            runName = Util.RandomString(5);
             webinject = new WebInject(ns + "_" +runName);
         }
 
@@ -173,7 +168,7 @@ verifypositive: Latest run results for all apps
             this.batch = batch;
         }
     
-    //        static string targetServer = "[THIS_SERVER]";
+//        static string targetServer = "[THIS_SERVER]";
         static string targetServer = "dash";
    
         static string server_uri = "http://dash/webinject/server/submit/";
@@ -184,7 +179,7 @@ verifypositive: Latest run results for all apps
 
             test = SubVariables(test);
 
-            string uri = server_uri + "?batch=" + batch;
+            string uri = server_uri + "?batch=" + batch + "&name=" + GetTestName();
             result = Util.Post(uri, "steps="+test);
             //Console.WriteLine(result);
 
@@ -202,10 +197,20 @@ verifypositive: Latest run results for all apps
             string userdnsdomain = Environment.GetEnvironmentVariable("userdnsdomain");
             return computername+"."+userdnsdomain;
         }
-    }
+        
+        public static string GetTestName()
+        {
+            return _LastSegmentOfNUnitTestFullName(NUnit.Framework.TestContext.CurrentContext.Test.FullName);
+        }
 
-    public static class Dashboard
-    {
+        private static string _LastSegmentOfNUnitTestFullName(string testName)
+        {
+            string[] segments = Regex.Split(testName, "\\.");
+            return segments.Last();
+        }
+    }
+    
+    public static class Util {
 
         private static Random random = new Random();
         public static string RandomString(int length)
@@ -214,61 +219,7 @@ verifypositive: Latest run results for all apps
             return new string(Enumerable.Repeat(chars, length)
               .Select(s => s[random.Next(s.Length)]).ToArray());
         }
-        
-        public static string RunServer()
-        {
-            return Environment.GetEnvironmentVariable("computername");
-        }
 
-        public static string LogResult(string testName, string appName, string runName, string runServer, string testStatus, string message)
-        {
-            string logURL = "http://dash/dash/results/log?";
-            string queryString = String.Format("test_name={0}&app_name={1}&run_name={2}&run_server={3}&test_passed={4}&message={5}",
-                                     testName, appName, runName, runServer, testStatus, message);
-
-            try
-            {
-                string response = Util.Get(logURL + queryString);
-                if ( !(response.Contains("Test logged ok")) ) {
-                    Console.WriteLine("Error message logging test for URL: " + logURL + queryString);
-                    Console.WriteLine(response);
-                }
-                return response;
-            }
-            catch (WebException e)
-            {
-                Console.WriteLine("Server error logging test for URL: " + logURL + queryString);
-                return "Web request failed";
-            }
-        }
-
-        public static string GetTestName()
-        {
-            return Dashboard._LastTwoSegmentsOfNUnitTestFullName(NUnit.Framework.TestContext.CurrentContext.Test.FullName);
-        }
-
-        //NUnit.Framework.TestContext.CurrentContext.Result.StackTrace
-        //NUnit.Framework.TestContext.CurrentContext.Result.Outcome.Status; (For test Execution Status)
-
-        public static string GetTestMessage()
-        {
-            return NUnit.Framework.TestContext.CurrentContext.Result.Message;
-        }
-
-        private static string _LastTwoSegmentsOfNUnitTestFullName(string testName)
-        {
-            string[] segments = Regex.Split(testName, "\\.");
-            return segments[segments.Length - 2] + "." + segments.Last();
-        }
-
-        public static string GetTestStatus()
-        {
-            return NUnit.Framework.TestContext.CurrentContext.Result.Outcome.Status.ToString();
-        }
-
-    }
-    
-    public static class Util {
         public static string Get(string uri)
         {
             HttpWebRequest request = (HttpWebRequest)WebRequest.Create(uri);
@@ -282,8 +233,8 @@ verifypositive: Latest run results for all apps
             }
         }
 
-        public static string Post(string uri, string postData)  {
-
+        public static string Post(string uri, string postData)
+        {
             var request = (HttpWebRequest)WebRequest.Create(uri);
              
             var data = Encoding.ASCII.GetBytes(postData);
