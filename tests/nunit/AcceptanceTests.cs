@@ -16,14 +16,17 @@ namespace MyApp.AcceptanceTests
         private string runName;
         private string runServer;
         private string appName = "MyApp";
+//        private WebInject webinject = new WebInject("defaultBatch");
+        private WebInject webinject;
         
         [OneTimeSetUp]
         protected void OneTimeSetUp()
         {
             runName = Dashboard.RandomString(5);
             runServer = Dashboard.RunServer();
+            webinject = new WebInject(runName);
         }
-        
+
         [SetUp]
         protected void SetUp()
         {
@@ -37,17 +40,49 @@ namespace MyApp.AcceptanceTests
         }
 
         [Test]
-        public void SleepyTest()
+        public void SleepyTest1()
         {
             string test = @"
-step: Sleepy Test
+step: Sleepy Test1
 shell: echo retry {RETRY}
 verifypositive: retry 4
 sleep: 1
 retry: 5
             ";
 
-            string result = WebInject.Submit(test);
+            string result = webinject.Submit(test);
+
+            Assert.IsTrue( result.Contains("WEBINJECT TEST PASSED") , "Failed" );
+        }
+
+        [Test]
+        public void SleepyTest2()
+        {
+            string test = @"
+step: Sleepy Test2
+shell: echo retry {RETRY}
+verifypositive: retry 4
+sleep: 1
+retry: 5
+            ";
+
+            string result = webinject.Submit(test);
+
+            Assert.IsTrue( result.Contains("WEBINJECT TEST PASSED") , "Failed" );
+        }
+
+        [Test]
+        public void SleepyTest3()
+        {
+            string test = @"
+step: Sleepy Test3
+shell: echo retry {RETRY}
+verifypositive: retry 4
+sleep: 1
+retry: 5
+            ";
+
+            string result = webinject.Submit(test);
 
             Assert.IsTrue( result.Contains("WEBINJECT TEST PASSED") , "Failed" );
         }
@@ -64,7 +99,7 @@ shell1: echo hi again
 shell2: dir
             ";
 
-            string result = WebInject.Submit(test);
+            string result = webinject.Submit(test);
 
             Assert.IsTrue( result.Contains("WEBINJECT TEST PASSED") , "Failed" );
         }
@@ -78,7 +113,7 @@ shell1: echo hello
 verifypositive: goodbye
             ";
 
-            string result = WebInject.Submit(test);
+            string result = webinject.Submit(test);
 
             Assert.IsTrue( result.Contains("WEBINJECT TEST FAILED") , "Failed to fail" );
         }
@@ -92,7 +127,7 @@ url: https://www.totaljobs.com
 verifypositive: More options
             ";
 
-            string result = WebInject.Submit(test);
+            string result = webinject.Submit(test);
 
             Assert.IsTrue( result.Contains("WEBINJECT TEST PASSED") , "Failed" );
         }
@@ -106,7 +141,7 @@ url: http://[THIS_SERVER]/dash/results/
 verifypositive: Latest run results for all apps
             ";
 
-            string result = WebInject.Submit(test);
+            string result = webinject.Submit(test);
 
             Assert.IsTrue( result.Contains("WEBINJECT TEST PASSED") , "Failed" );
         }
@@ -120,25 +155,34 @@ url: http://[TARGET_SERVER]/dash/results/
 verifypositive: Latest run results for all apps
             ";
 
-            string result = WebInject.Submit(test);
+            string result = webinject.Submit(test);
 
             Assert.IsTrue( result.Contains("WEBINJECT TEST PASSED") , "Failed" );
         }
 
     }
 
-    public static class WebInject
+    public class WebInject
     {
-//        static string targetServer = "[THIS_SERVER]";
+
+        private string batch;
+        
+        public WebInject (string batch) {
+            this.batch = batch;
+        }
+    
+    //        static string targetServer = "[THIS_SERVER]";
         static string targetServer = "dash";
    
-        static string uri = "http://dash/webinject/server/submit/";
+        static string server_uri = "http://dash/webinject/server/submit/";
 
-        public static string Submit(string test) {
+        public string Submit(string test) {
+
             string result;
 
             test = SubVariables(test);
 
+            string uri = server_uri + "?batch=" + batch;
             result = Util.Post(uri, "steps="+test);
             //Console.WriteLine(result);
 
