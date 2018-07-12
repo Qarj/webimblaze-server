@@ -8,8 +8,7 @@ using System.Text;
 
 namespace MyApp.AcceptanceTests
 {
-    [TestFixture]
-    [Parallelizable(ParallelScope.Children)]
+    [TestFixture, Parallelizable(ParallelScope.Children)]
     public class AcceptanceTests
     {
         
@@ -95,19 +94,6 @@ shell2: dir
 
             string result = webinject.Submit(test);
             StringAssert.Contains( "WEBINJECT TEST PASSED" , result );
-        }
-
-        [Test]
-        public void FailureDetected()
-        {
-            string test = @"
-step: This is step one
-shell1: echo hello
-verifypositive: goodbye
-            ";
-
-            string result = webinject.Submit(test);
-            StringAssert.Contains( "WEBINJECT TEST FAILED" , result );
         }
 
         [Test]
