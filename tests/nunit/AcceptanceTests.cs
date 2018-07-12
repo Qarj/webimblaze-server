@@ -16,7 +16,6 @@ namespace MyApp.AcceptanceTests
         private string runName;
         private string runServer;
         private string appName = "MyApp";
-//        private WebInject webinject = new WebInject("defaultBatch");
         private WebInject webinject;
         
         [OneTimeSetUp]
@@ -24,7 +23,10 @@ namespace MyApp.AcceptanceTests
         {
             runName = Dashboard.RandomString(5);
             runServer = Dashboard.RunServer();
-            webinject = new WebInject(runName);
+
+            string ns = GetType().Namespace;
+
+            webinject = new WebInject(ns + "_" +runName);
         }
 
         [SetUp]
