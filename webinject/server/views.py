@@ -31,6 +31,7 @@ def run(request):
 
     #print ('Started existing test execution:', path)
     result_stdout = run_wif_for_test_file_at_path(path, batch, target)
+    #print ('result_stdout:', result_stdout)
     #print ('Finished existing test execution:', path)
 
     http_status, result_status, result_status_message = get_status(result_stdout)
@@ -103,7 +104,7 @@ def get_wif_command(path, batch, target):
     if (not target):
         target = 'default'
 
-    return ['perl', wif_location(), path, '--env', 'DEV', '--target', target, '--batch', batch , '--no-update-config', '--headless']
+    return ['perl', wif_location(), path, '--env', 'DEV', '--target', target, '--batch', batch, '--no-update-config', '--headless']
 
 def wif_location():
 
@@ -119,7 +120,7 @@ def wif_location_linux():
     for l in locations:
         if ( os.path.isfile(l+r'/wif.pl') ):
             return l+r'/wif.pl'
-    return ('WebInject Framework wif.pl file not found - suggest deploying to /var/www/wis/WebInject-Framework \n\n')
+    return ('WebInject Framework wif.pl file not found - suggest deploying to /usr/local/bin/WebInject-Framework \n\n')
 
 def wif_location_windows():
 
