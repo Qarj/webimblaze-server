@@ -25,26 +25,14 @@ def my_reverse(viewname, kwargs=None, query_kwargs=None):
     return url
 
 simple_steps = """
-<testcases repeat="1">
+step:               Check that WebImblaze Server can run a simple submitted test
+shell:              echo This and that
+verifypositive1:    This and that
 
-<case
-    id="10"
-    description1="Check that WebInject Server can run a simple submitted test"
-    method="cmd"
-    command="echo This and that"
-    verifypositive1="This and that"
-/>
-
-<case
-    id="20"
-    description1="Subsequent step - retry {RETRY}"
-    method="cmd"
-    command="echo Not much more - retry {RETRY}"
-    verifypositive="retry 0"
-    verifynegative="Nothing much"
-/>
-
-</testcases>
+step:               Subsequent step - retry {RETRY}
+shell:              echo Not much more - retry {RETRY}
+verifypositive:     retry 0
+verifynegative:     Nothing much
 """        
 
 
@@ -60,7 +48,7 @@ class ServerIndexViewTests(TestCase):
         self.assertContains(response, 'href="run/?path=tests%2Ftest.xml"')
         self.assertContains(response, 'Submit test steps for immediate run with batch name and target options')
 
-class WebInjectServerTests(TestCase):
+class WebImblazeServerTests(TestCase):
     
     #
     # test helpers
@@ -122,18 +110,18 @@ class WebInjectServerTests(TestCase):
         self.assertNotRegex(response.content.decode('utf-8'), regex)
 
     #
-    # Run WebInject Framework existing test through WebInject Framework
+    # Run WebImblaze Framework existing test through WebImblaze Framework
     #
 
     def test_run_simple_test(self):
         response = self.runit('tests/test.xml', False)
-        self.assertContains(response, 'Test that WebInject can run a very basic test')
+        self.assertContains(response, 'Test that WebImblaze can run a very basic test')
         self.assertContains(response, '<pre><code>')
         self.assertContains(response, '</code></pre>')
         self.assertContains(response, 'Result at: http')
         self._assertRegex(response, r'\sFailed Positive Verification') # i.e. no ANSI code like 1;33m
         self.assertContains(response, 'style.css')
-        self.assertContains(response, 'class="pass">WEBINJECT TEST PASSED<')
+        self.assertContains(response, 'class="pass">WEBIMBLAZE TEST PASSED<')
         self._assertNotRegex(response, r'Batch ')
         self._assertNotRegex(response, r'Target ')
         self._assertRegex(response, r'a href="[^"]*results_[0-9]{4}')
@@ -146,29 +134,29 @@ class WebInjectServerTests(TestCase):
     def test_run_failing_test(self):
         response = self.runit('tests/fail.xml', False, target='team2')
         self.assertContains(response, 'Test Cases Passed: 0')
-        self.assertContains(response, 'class="fail">WEBINJECT TEST FAILED<')
+        self.assertContains(response, 'class="fail">WEBIMBLAZE TEST FAILED<')
         self._assertNotRegex(response, r'Batch \[\]')
         self.assertContains(response, '>Target [team2]<')
 
     def test_run_non_existing_test_is_an_error(self):
         response = self.runit('examples/testdoesnotexist.xml', False)
-        self._assertRegex(response, r'class="error">WEBINJECT TEST ERROR<')
+        self._assertRegex(response, r'class="error">WEBIMBLAZE TEST ERROR<')
         self.assertEqual(500, response.status_code, 'Response code 500 not found, was ' + str(response.status_code))
 
     #
-    # Submit test to run through WebInject-Framework
+    # Submit test to run through WebImblaze-Framework
     #
 
     def test_can_submit_a_simple_test_and_see_result(self):
         
         response = self.submit(simple_steps, debug=False)
-        self.assertContains(response, 'class="pass">WEBINJECT TEST PASSED<')
+        self.assertContains(response, 'class="pass">WEBIMBLAZE TEST PASSED<')
         self.assertContains(response, '>Result<')
 
     def test_can_submit_a_test_with_batch_and_target_and_test_name(self):
         
         response = self.submit(simple_steps, batch='SubmitBatch', target='team2', name='named_test', debug=False)
-        self.assertContains(response, 'class="pass">WEBINJECT TEST PASSED<')
+        self.assertContains(response, 'class="pass">WEBIMBLAZE TEST PASSED<')
         self.assertContains(response, '>Batch [SubmitBatch] Target [team2]<')
         self.assertContains(response, 'named_test.test')
 
@@ -196,11 +184,11 @@ class WebInjectServerTests(TestCase):
         response = self.canary(debug=False)
         self.assertContains(response, 'All canary checks passed')
         self.assertContains(response, 'class="boldpass"')
-        self.assertContains(response, 'WebInject Framework found at')
+        self.assertContains(response, 'WebImblaze Framework found at')
         self.assertContains(response, 'wif.pl can be executed - shows help info')
         self.assertContains(response, 'DEV environment config found')
         self.assertContains(response, 'wif.config found')
-        self.assertContains(response, 'WebInject Framework can run webinject.pl and store result')
+        self.assertContains(response, 'WebImblaze Framework can run wi.pl and store result')
 
     #
     # Lean test specification format
@@ -211,10 +199,6 @@ class WebInjectServerTests(TestCase):
 
 # MVP Tests
     # Can post the form from NUNIT
-
-    # do not need opening <testcases repeat="1"> tag
-    # do not need closing tag
-
 
 # Ref  - form for posting a test https://docs.djangoproject.com/en/2.0/topics/forms/
 

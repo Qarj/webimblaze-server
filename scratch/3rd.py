@@ -17,7 +17,7 @@ class testHTTPServer_RequestHandler(BaseHTTPRequestHandler):
  
         # Send message back to client
         message = 'Hello world!\n'
-        message = message + run_webinject()
+        message = message + run_webimblaze()
         # Write content as utf-8 data
         self.wfile.write(bytes(message, "utf8"))
         return
@@ -40,9 +40,9 @@ def run():
     print('running server...')
     httpd.serve_forever()
 
-def run_webinject():
-    print ("Running WebInject")
-    result = subprocess.run(["perl", "..\WebInject-Framework\wif.pl", "..\WebInject\examples\get.xml"], stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
+def run_webimblaze():
+    print ("Running WebImblaze")
+    result = subprocess.run(["perl", "..\WebImblaze-Framework\wif.pl", "..\WebImblaze\examples\get.xml"], stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
     print ("Args:", result.args)
     #print (result.stdout.decode())
     print ("Return Code:", result.returncode)

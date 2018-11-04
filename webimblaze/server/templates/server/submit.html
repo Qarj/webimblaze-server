@@ -50,15 +50,15 @@ verifypositive1:    results
 
             <textarea readonly class="steps" cols="68" rows="15">
 
-step: Get Totaljobs Home Page
-selenium1: $driver->get("http://www.totaljobs.com")
-selenium2: $driver->get_all_cookies()
-verifytext: get_current_url,get_body_text,get_page_source
+step:           Get Totaljobs Home Page
+selenium1:      $driver->get("https://www.totaljobs.com")
+selenium2:      $driver->get_all_cookies()
+verifytext:     get_current_url,get_body_text,get_page_source
 verifypositive: Location
 
-step: Get Search results page
-selenium: $driver->get("http://www.totaljobs.com/jobs/selenium")
-verifytext: get_current_url,get_body_text,get_page_source
+step:           Get Search results page
+selenium:   $driver->get("https://www.totaljobs.com/jobs/selenium")
+verifytext:     get_current_url,get_body_text,get_page_source
 verifypositive: results
             </textarea>
         </div>

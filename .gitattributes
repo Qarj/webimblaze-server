@@ -8,6 +8,7 @@
 *.json      text
 *.cs        text
 *.js        text
+*.test      text
 *.txt       text
 LICENSE     text
 *.config    text

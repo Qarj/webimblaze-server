@@ -1,0 +1,18 @@
+step:               Submit a Selenium test
+varEMPTY:":         ""
+url:                http://127.0.0.1/webimblaze/server/submit/?batch=Multi&target=default
+postbody:///:       ///steps=
+
+step:               Get Totaljobs Home Page
+section:            Selenium Smoke Test
+shell1:             $driver->get(q!http://www.totaljobs.com!)
+shell2:             $driver->get_all_cookies()
+verifytext:         get_current_url,get_body_text,get_page_source
+verifypositive:     Location
+
+///
+verifypositive1:    Get Totaljobs Home Page
+verifypositive2:    WEBIMBLAZE TEST PASSED
+verifynegative1:    WEBIMBLAZE TEST FAILED
+getallhrefs:        \.css|\.less
+getallsrcs:         \.jpg|\.png|\.js|\.gif

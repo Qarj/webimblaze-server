@@ -1,0 +1,5 @@
+step:               Run a quick test
+url:                http://127.0.0.1/webimblaze/server/run/?path=examples%2Ftest.xml
+verifypositive1:    Test that WebImblaze can run a very basic test
+getallhrefs:        \.css|\.less
+getallsrcs:         \.jpg|\.png|\.js|\.gif

@@ -1,0 +1,3 @@
+step: Run a quick test
+shell: echo all is good
+verifypositive1: all is good

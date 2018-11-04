@@ -1,0 +1,4 @@
+step:               Run a long running test
+url:                http://127.0.0.1/webimblaze/server/run/?path=examples%2Fslow.xml
+verifypositive1:    Sorry that took so long
+getallhrefs:        \.css|\.less" getallsrcs="\.jpg|\.png|\.js|\.gif

@@ -1,0 +1,32 @@
+{% extends "public/base.html" %}
+
+{% block content %}
+
+{% if error %}
+    <h4>{{error}}</h4>
+{% else %}
+    <h1>{{ page_heading }}</h1>
+    <h2>Run Canary test</h2>
+    <h4><a href="canary/" class="normal">http://localhost/webimblaze/server/canary/</a></h4>
+
+    <h2>Run an existing test example</h2>
+    <h4><a href="run/?path=tests%2Ftest.test" class="normal">http://localhost/webimblaze/server/run/?path=tests%2Ftest.test</a></h4>
+
+    <h2>Run an existing test example - use * instead of %2F for folder separator</h2>
+    <h4><a href="run/?path=tests*test.test" class="normal">http://localhost/webimblaze/server/run/?path=tests*test.test</a></h4>
+    
+    <h2>Specify batch name and target options</h2>
+    <h4><a href="run/?path=tests*test.test&batch=MyBatch&target=team2" class="normal">http://localhost/webimblaze/server/run/?path=tests*test.test&batch=MyBatch&target=team2</a></h4>
+
+    <h2>Slow running test - approx 16 seconds to prove concurrency</h2>
+    <h4><a href="run/?path=tests*slow.test" class="normal">http://localhost/webimblaze/server/run/?path=tests*slow.test</a></h4>
+
+    <h2>Submit test steps for immediate run</h2>
+    <h4><a href="submit" class="normal">http://localhost/webimblaze/server/submit</a></h4>
+
+    <h2>Submit test steps for immediate run with batch name and target options</h2>
+    <h4><a href="submit?batch=SubmitBatch&target=team2" class="normal">http://localhost/webimblaze/server/submit?batch=SubmitBatch&target=team2</a></h4>
+
+{% endif %}
+
+{% endblock %}

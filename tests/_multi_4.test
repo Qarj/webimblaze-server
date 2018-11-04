@@ -1,0 +1,16 @@
+step:               Submit a headless test
+url:                http://127.0.0.1/webimblaze/server/submit/?batch=Multi&target=default
+postbody:///:       ///steps=
+
+step:               Get Totaljobs Home Page
+varTOTALJOBS_URL:   https://www.totaljobs.com
+url:                {TOTALJOBS_URL}
+verifypositive1:    Search for and be recommended
+verifypositive2:    See all hiring companies
+getallhrefs:        \.css|\.less
+getallsrcs:         \.jpg|\.png|\.js|\.gif
+
+///
+verifypositive1:    Get Totaljobs Home Page
+getallhrefs:        \.css|\.less
+getallsrcs:         \.jpg|\.png|\.js|\.gif

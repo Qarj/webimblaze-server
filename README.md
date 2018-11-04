@@ -1,16 +1,16 @@
-# webinject-server 0.1.0
+# webimblaze-server 0.1.0
 
-WebInject Server is a project for running WebInject over http.
+WebImblaze Server is a project for running WebImblaze over http.
 
-Run an existing script via a GET. Example: http://localhost/webinject/server/run/?path=test.test
+Run an existing script via a GET. Example: http://localhost/webimblaze/server/run/?path=test.test
 
 Or submit a test script to run using POST.
 
-The main WebInject project is here: http://qarj.github.io/WebInject
+The main WebImblaze project is here: http://qarj.github.io/WebImblaze
 
 ## Deploy on Windows
 
-To get WebInject Server working there are additional dependecies on Python 3, Apache and mod_wsgi. 
+To get WebImblaze Server working there are additional dependecies on Python 3, Apache and mod_wsgi. 
 The setup is explained in the project test-results-dashboard. Rather than repeat the instructions
 here, it is no harder to actually deploy the other project. So do that now and the dependencies will
 be satisfied.
@@ -23,18 +23,18 @@ Clone this project:
 cd /d C:\
 mkdir git
 cd git
-git clone https://github.com/Qarj/webinject-server.git
-cd webinject-server
+git clone https://github.com/Qarj/webimblaze-server.git
+cd webimblaze-server
 ```
 
-### Configure Apache to point to webinject-server
+### Configure Apache to point to webimblaze-server
 
 Restart Apache
 ```
 \Apache24\bin\httpd -k restart
 ```
 
-verify with url: http://localhost/webinject/server
+verify with url: http://localhost/webimblaze/server
 
 Check the error logs
 ```
@@ -49,13 +49,13 @@ additional log info.
 Requires Python 3, tested with Python 3.5.2 and 3.6.5.
 
 Deploy these projects to the recommended location:
-- https://github.com/Qarj/WebInject
-- https://github.com/Qarj/WebInject-Framework
+- https://github.com/Qarj/WebImblaze
+- https://github.com/Qarj/WebImblaze-Framework
 
 Optionally deploy if you want to use Selenium too:
-- https://github.com/Qarj/WebInject-Selenium
+- https://github.com/Qarj/WebImblaze-Selenium
 
-To get WebInject Server working there are additional dependecies on Python 3, Apache and mod_wsgi. 
+To get WebImblaze Server working there are additional dependecies on Python 3, Apache and mod_wsgi. 
 The setup is explained in the project test-results-dashboard. Rather than repeat the instructions
 here, it is no harder to actually deploy the other project. So do that now and the dependencies will
 be satisfied.
@@ -63,15 +63,15 @@ be satisfied.
 Deploy:
 - https://github.com/Qarj/test-results-dashboard
 
-### Clone webinject-server
+### Clone webimblaze-server
 
-Create a folder for webinject-server and clone the project:
+Create a folder for webimblaze-server and clone the project:
 ```
 cd /var/www
 sudo mkdir wis
 sudo chmod 777 wis
 cd wis
-sudo git clone https://github.com/Qarj/webinject-server
+sudo git clone https://github.com/Qarj/webimblaze-server
 ```
 
 Set permissions so the Apache user can access the file system:
@@ -87,7 +87,7 @@ Restart Apache:
 sudo systemctl restart apache2
 ```
 
-Verify with url: http://localhost/webinject/server/canary/
+Verify with url: http://localhost/webimblaze/server/canary/
 
 ### Debugging
 
@@ -101,20 +101,20 @@ Optional - deactivate the virtual environment from your shell:
 deactivate
 ```
 
-## WebInject Server home page
+## WebImblaze Server home page
 
-http://localhost/webinject/server/
+http://localhost/webimblaze/server/
 
 ## Run the Unit Tests
 
-From folder `webinject-server/webinject`:
+From folder `webimblaze-server/webimblaze`:
 ```
 python manage.py test server
 ```
 
 ## Run the development server
 
-From folder `webinject-server/webinject`:
+From folder `webimblaze-server/webimblaze`:
 ```
 python manage.py runserver
 ```

@@ -13,14 +13,14 @@ namespace MyApp.AcceptanceTests
     {
         
         private string runName;
-        private WebInject webinject;
+        private WebImblaze webimblaze;
         
         [OneTimeSetUp]
         protected void OneTimeSetUp()
         {
             string ns = GetType().Namespace;
             runName = Util.RandomString(5);
-            webinject = new WebInject(ns + "_" + runName);
+            webimblaze = new WebImblaze(ns + "_" + runName);
         }
 
         [SetUp]
@@ -46,8 +46,8 @@ sleep: 1
 retry: 5
             ";
 
-            string result = webinject.Submit(test);
-            StringAssert.Contains( "WEBINJECT TEST PASSED" , result );
+            string result = webimblaze.Submit(test);
+            StringAssert.Contains( "WEBIMBLAZE TEST PASSED" , result );
         }
 
         [Test]
@@ -61,8 +61,8 @@ sleep: 1
 retry: 5
             ";
 
-            string result = webinject.Submit(test);
-            StringAssert.Contains( "WEBINJECT TEST PASSED" , result );
+            string result = webimblaze.Submit(test);
+            StringAssert.Contains( "WEBIMBLAZE TEST PASSED" , result );
         }
 
         [Test]
@@ -76,8 +76,8 @@ sleep: 1
 retry: 5
             ";
 
-            string result = webinject.Submit(test);
-            StringAssert.Contains( "WEBINJECT TEST PASSED" , result );
+            string result = webimblaze.Submit(test);
+            StringAssert.Contains( "WEBIMBLAZE TEST PASSED" , result );
         }
 
         [Test]
@@ -92,8 +92,8 @@ shell1: echo hi again
 shell2: dir
             ";
 
-            string result = webinject.Submit(test);
-            StringAssert.Contains( "WEBINJECT TEST PASSED" , result );
+            string result = webimblaze.Submit(test);
+            StringAssert.Contains( "WEBIMBLAZE TEST PASSED" , result );
         }
 
         [Test]
@@ -105,8 +105,8 @@ url: https://www.totaljobs.com
 verifypositive: More options
             ";
 
-            string result = webinject.Submit(test);
-            StringAssert.Contains( "WEBINJECT TEST PASSED" , result );
+            string result = webimblaze.Submit(test);
+            StringAssert.Contains( "WEBIMBLAZE TEST PASSED" , result );
         }
 
         [Test]
@@ -118,8 +118,8 @@ url: http://[THIS_SERVER]/dash/results/
 verifypositive: Latest run results for all apps
             ";
 
-            string result = webinject.Submit(test);
-            StringAssert.Contains( "WEBINJECT TEST PASSED" , result );
+            string result = webimblaze.Submit(test);
+            StringAssert.Contains( "WEBIMBLAZE TEST PASSED" , result );
         }
 
         [Test]
@@ -131,25 +131,25 @@ url: http://[TARGET_SERVER]/dash/results/
 verifypositive: Latest run results for all apps
             ";
 
-            string result = webinject.Submit(test);
-            StringAssert.Contains( "WEBINJECT TEST PASSED" , result );
+            string result = webimblaze.Submit(test);
+            StringAssert.Contains( "WEBIMBLAZE TEST PASSED" , result );
         }
 
     }
 
-    public class WebInject
+    public class WebImblaze
     {
 
         private string batch;
         
-        public WebInject (string batch) {
+        public WebImblaze (string batch) {
             this.batch = batch;
         }
     
         static string targetServer = "[THIS_SERVER]";
 //        static string targetServer = "dash";
    
-        static string server_uri = "http://dash/webinject/server/submit/";
+        static string server_uri = "http://dash/webimblaze/server/submit/";
 
         public string Submit(string test) {
 

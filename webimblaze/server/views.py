@@ -12,8 +12,8 @@ from .forms import SubmitForm
 from django.views.decorators.csrf import csrf_exempt
 
 def index(request):
-    page_title = "WebInject Server"
-    page_heading = "Webinject Server"
+    page_title = "WebImblaze Server"
+    page_heading = "WebImblaze Server"
     error = ''
 
     context = {
@@ -83,11 +83,11 @@ def get_options_summary(batch, target):
     return options_summary.summary
 
 def get_status(result_stdout):
-    if ( re.search(r'(Test Cases Failed: 0)', result_stdout) ):
-        return 200, 'pass', 'WEBINJECT TEST PASSED'
-    if ( re.search(r'(Test Cases Failed: [1-9])', result_stdout) ):
-        return 200, 'fail', 'WEBINJECT TEST FAILED'
-    return 500, 'error', 'WEBINJECT TEST ERROR'
+    if ( re.search(r'(Test Steps Failed: 0)', result_stdout) ):
+        return 200, 'pass', 'WEBIMBLAZE TEST PASSED'
+    if ( re.search(r'(Test Steps Failed: [1-9])', result_stdout) ):
+        return 200, 'fail', 'WEBIMBLAZE TEST FAILED'
+    return 500, 'error', 'WEBIMBLAZE TEST ERROR'
 
 def run_wif_for_test_file_at_path(path, batch, target):
     cmd = get_wif_command(path, batch, target)
@@ -99,7 +99,7 @@ def run_wif_for_test_file_at_path(path, batch, target):
 def get_wif_command(path, batch, target):
 
     if (not batch):
-        batch = 'WebInject-Server'
+        batch = 'WebImblaze-Server'
 
     if (not target):
         target = 'default'
@@ -116,25 +116,27 @@ def wif_location():
 def wif_location_linux():
 
     locations = []
-    locations.append(r'/usr/local/bin/WebInject-Framework')
+    locations.append(r'/usr/local/bin/WebImblaze-Framework')
     for l in locations:
         if ( os.path.isfile(l+r'/wif.pl') ):
             return l+r'/wif.pl'
-    return ('WebInject Framework wif.pl file not found - suggest deploying to /usr/local/bin/WebInject-Framework \n\n')
+    return ('WebImblaze Framework wif.pl file not found - suggest deploying to /usr/local/bin/WebImblaze-Framework \n\n')
 
 def wif_location_windows():
 
     locations = []
-    locations.append(r'D:\WebInjectSERVER')
-    locations.append(r'C:\WebInjectSERVER')
-    locations.append(r'C:\git\WebInject-Framework')
+    locations.append(r'D:\WebImblazeSERVER')
+    locations.append(r'C:\WebImblazeSERVER')
+    locations.append(r'C:\git\WebImblaze-Framework')
+    locations.append(r'C:\WebImblaze')
+    locations.append(r'D:\WebImblaze')
+    locations.append(r'C:\WebImblaze-Framework')
     locations.append(r'C:\WebInject')
     locations.append(r'D:\WebInject')
-    locations.append(r'C:\WebInject-Framework')
     for l in locations:
         if ( os.path.isfile(l+r'\wif.pl') ):
             return l+r'\wif.pl'
-    return ('WebInject Framework wif.pl file not found - suggest deploying to C:\\WebInjectSERVER\\wif.pl \n\n')
+    return ('WebImblaze Framework wif.pl file not found - suggest deploying to C:\\WebImblazeSERVER\\wif.pl \n\n')
 
 @csrf_exempt
 def submit(request):
@@ -253,7 +255,7 @@ def _write_steps_to_file_in_temp_folder(steps, name):
 
 def _get_temp_folder_location_and_ensure_exists():
     script_path = os.path.dirname(os.path.realpath(__file__))
-    temp_folder_path = script_path + '/../../temp/webinject-server'
+    temp_folder_path = script_path + '/../../temp/webimblaze-server'
     pathlib.Path(temp_folder_path).mkdir(parents=True, exist_ok=True)
     return temp_folder_path
 
@@ -274,7 +276,7 @@ def canary(request):
         tracker.append( *_canary_default_config() )
         tracker.append( *_canary_wif_config() )
         if (tracker.canary_checks_passed):
-            tracker.append( *_canary_webinject_can_be_executed() )
+            tracker.append( *_canary_webimblaze_can_be_executed() )
             
 
     result_status = 'pass'
@@ -286,7 +288,7 @@ def canary(request):
         result_status_message = 'Canary checks failed'
 
     page_title = 'Canary'
-    page_heading = 'WebInject Server Canary'
+    page_heading = 'WebImblaze Server Canary'
 
     context = {
         'page_title': page_title,
@@ -320,7 +322,7 @@ class canaryStatus:
             self.canary_checks_passed = False
 
         self.canary_summary.append_non_blank_value(message, status)
-        # Example append string:  <p class="pass">WebInject Framework found at ...</p>
+        # Example append string:  <p class="pass">WebImblaze Framework found at ...</p>
     
     def summary(self):
         return self.canary_summary.summary
@@ -330,7 +332,7 @@ def _canary_wif_location():
     if 'not found' in wif_location():
          return wif_location(), False
     else:
-         return 'OK --&gt; WebInject Framework found at ' + wif_location(), True
+         return 'OK --&gt; WebImblaze Framework found at ' + wif_location(), True
 
 def _canary_wif_can_be_executed():
 
@@ -374,13 +376,13 @@ def _canary_wif_config():
     else:
         return 'Could not find wif.config file at ' + wif_config, False
 
-def _canary_webinject_can_be_executed():
+def _canary_webimblaze_can_be_executed():
     
     script_path = os.path.dirname(os.path.realpath(__file__))
-    test_path = script_path + '/../../tests/check.xml'
-    result = run_wif_for_test_file_at_path(test_path, 'WebInject-Server-Canary', 'default')
+    test_path = script_path + '/../../tests/check.test'
+    result = run_wif_for_test_file_at_path(test_path, 'WebImblaze-Server-Canary', 'default')
 
-    if 'Test Cases Failed: 0' in result and 'Result at: http' in result:
-        return 'OK --&gt; WebInject Framework can run webinject.pl and store result', True
+    if 'Test Steps Failed: 0' in result and 'Result at: http' in result:
+        return 'OK --&gt; WebImblaze Framework can run wi.pl and store result', True
     else:
-        return 'WebInject Framework could not run webinject.pl and store result<br /><br /><pre><code>' + result + '</code></pre>', False
+        return 'WebImblaze Framework could not run wi.pl and store result<br /><br /><pre><code>' + result + '</code></pre>', False
