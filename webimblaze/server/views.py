@@ -341,7 +341,7 @@ def _canary_wif_can_be_executed():
     output, errors = proc.communicate()
     decoded = output.decode('cp850') # western european Windows code page is cp850
 
-    if 'Usage: wif.pl' in decoded:
+    if 'Usage: perl wif.pl' in decoded:
         return 'OK --&gt; wif.pl can be executed - shows help info', True
     else:
         return 'Could not execute wif.pl to view help', False
