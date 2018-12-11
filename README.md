@@ -10,7 +10,7 @@ The main WebImblaze project is here: https://github.com/Qarj/WebImblaze
 
 ## Deploy on Windows
 
-To get WebImblaze Server working there are additional dependecies on Python 3, Apache and mod_wsgi. 
+To get WebImblaze Server working there are additional dependencies on Python 3, Apache and mod_wsgi. 
 The setup is explained in the project test-results-dashboard. Rather than repeat the instructions
 here, it is no harder to actually deploy the other project. So do that now and the dependencies will
 be satisfied.
@@ -55,7 +55,7 @@ Deploy these projects to the recommended location:
 Optionally deploy if you want to use Selenium too:
 - https://github.com/Qarj/WebImblaze-Selenium
 
-To get WebImblaze Server working there are additional dependecies on Python 3, Apache and mod_wsgi. 
+To get WebImblaze Server working there are additional dependencies on Python 3, Apache and mod_wsgi. 
 The setup is explained in the project test-results-dashboard. Rather than repeat the instructions
 here, it is no harder to actually deploy the other project. So do that now and the dependencies will
 be satisfied.
