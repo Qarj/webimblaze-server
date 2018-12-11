@@ -6,7 +6,7 @@ Run an existing script via a GET. Example: http://localhost/webimblaze/server/ru
 
 Or submit a test script to run using POST.
 
-The main WebImblaze project is here: http://qarj.github.io/WebImblaze
+The main WebImblaze project is here: https://github.com/Qarj/WebImblaze
 
 ## Deploy on Windows
 
